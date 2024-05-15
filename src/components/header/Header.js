@@ -6,9 +6,9 @@ import headerStyles from "./header.module.css";
 export default function Header() {
   return (
     <header className={headerStyles.header}>
-      <div className={headerStyles.logo}>
+      <span className={headerStyles.logo}>
         <Logo/>
-      </div>
+      </span>
       <p className={headerStyles.title}>Todo list</p>
       <div className={headerStyles.menu}>
         <Menu/>
