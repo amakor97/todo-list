@@ -1,0 +1,20 @@
+.footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+
+  display: flex;
+  width: 100vw;
+  height: 64px;
+  padding: 0 32px;
+  justify-content: flex-start;
+  align-items: center;
+
+  color: rgb(255, 255, 255);
+
+  background-color: rgb(35, 106, 138);
+}
+
+.text {
+  font-size: 1.5em;
+}
