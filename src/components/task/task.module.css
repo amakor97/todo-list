@@ -1,0 +1,65 @@
+.task {
+  width: 800px;
+  margin-bottom: 24px;
+
+  font-size: 1rem;
+  color: rgb(35, 106, 138);
+
+  border: 8px solid rgb(35, 106, 138);
+  border-radius: 24px;
+  background-color: white;
+}
+
+.task:last-child {
+  margin-bottom: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0 8px 8px;
+
+  color: white;
+
+  background-color: rgb(35, 106, 138);;
+}
+
+.title {
+  font-size: 2em;
+}
+
+.content {
+  padding: 8px;
+}
+
+.comments {
+  font-weight: bold;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 8px;
+  border-top: 2px solid rgb(35, 106, 138);
+}
+
+.completeBtn {
+  padding: 4px;
+
+  color: #1a1a47;
+
+  border: 2px solid #1a1a47;
+  border-radius: 8px;
+  background-color: transparent;
+  cursor: pointer;
+
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.completeBtn:hover {
+  color: white;
+
+  background-color: #1a1a47;
+}
