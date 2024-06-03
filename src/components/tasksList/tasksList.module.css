@@ -1,2 +1,12 @@
 .tasksList {
+  display: block;
+  width: fit-content;
+  margin: 80px auto;
+}
+
+.title {
+  margin-bottom: 16px;
+
+  font-size: 3em;
+  color: rgb(35, 106, 138);
 }
