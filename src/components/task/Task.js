@@ -14,7 +14,7 @@ export default function Task({taskData}) {
     setIsCardOpened(!isCardOpened);
   }
 
-  
+
   return (
     <div className={task.task} onClick={handleClickEvent}>
       <div className={task.header}>
@@ -29,7 +29,11 @@ export default function Task({taskData}) {
           </div>
           <div className={task.footer}>
             <p>started: {taskData.startDate}</p>
-            <button className={task.completeBtn} onClick={(e) => e.stopPropagation()}>Complete</button>
+            <button 
+              className={task.completeBtn} 
+              onClick={(e) => e.stopPropagation()}>
+              Complete
+            </button>
           </div>
         </>
       }
