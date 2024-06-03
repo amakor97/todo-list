@@ -1,12 +1,25 @@
 .tasksList {
   display: block;
   width: fit-content;
-  margin: 80px auto;
+  margin: 96px auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 800px;
+  margin-bottom: 16px;
 }
 
 .title {
   margin-bottom: 16px;
 
   font-size: 3em;
+  color: rgb(35, 106, 138);
+}
+
+.warning {
+  font-size: 2em;
   color: rgb(35, 106, 138);
 }
