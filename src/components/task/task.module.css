@@ -8,6 +8,7 @@
   border: 8px solid rgb(35, 106, 138);
   border-radius: 24px;
   background-color: white;
+  cursor: pointer;
 }
 
 .task:last-child {
