@@ -30,21 +30,13 @@ export default function TasksList() {
   }
 
   function handleAddParticipant(newParticipant, taskId) {
-
-    console.log(newParticipant, taskId);
-
-    const tasksDataCopy = [...tasksData];
-    console.log(tasksDataCopy);
-
-    const taskIndex = tasksData.findIndex(task => task.id === taskId);
-    console.log(taskIndex);
-
-    //const taskParticipants = tasksData[taskIndex].participants;
+    const tasksDataCopy = JSON.parse(JSON.stringify(tasksData));
+    const taskIndex = tasksDataCopy.findIndex(task => task.id === taskId);
     tasksDataCopy[taskIndex].participants.push(newParticipant);
-    console.log(tasksDataCopy[taskIndex].participants);
+    setTasksData(tasksDataCopy);
   }
 
-  let tasksArr = tasks.filter(task => task.status !== "finished").sort(
+  let tasksArr = tasksData.filter(task => task.status !== "finished").sort(
     (taskA, taskB) => sortTasksByFinishDate(taskA, taskB));
   tasksArr = tasksArr.filter(task => 
     task.description.toLowerCase().includes(searchText.toLowerCase()));
