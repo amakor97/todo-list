@@ -8,7 +8,6 @@
   border: 8px solid rgb(35, 106, 138);
   border-radius: 24px;
   background-color: white;
-  cursor: pointer;
 }
 
 .task:last-child {
@@ -23,7 +22,8 @@
 
   color: white;
 
-  background-color: rgb(35, 106, 138);;
+  background-color: rgb(35, 106, 138);
+  cursor: pointer;
 }
 
 .title {
@@ -36,6 +36,10 @@
 
 .comments {
   font-weight: bold;
+}
+
+.participantsCont {
+  display: flex;
 }
 
 .footer {
@@ -60,6 +64,25 @@
 }
 
 .completeBtn:hover {
+  color: white;
+
+  background-color: #1a1a47;
+}
+
+.addParticipantsBtn {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+
+  border: 2px solid #1a1a47;
+  border-radius: 8px;
+  background-color: transparent;
+  cursor: pointer;
+
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.addParticipantsBtn:hover {
   color: white;
 
   background-color: #1a1a47;

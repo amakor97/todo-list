@@ -17,12 +17,31 @@ export default function TasksList() {
   const [searchText, setSearchText] = useState("");
   const {error, filterText, tasks} = useTasks();
 
+  const [tasksData, setTasksData] = useState(tasks);
+
+  console.log(tasksData);
+
   if (error) {
     return null;
   }
 
   function handleInputSearch(e) {
     setSearchText(e.target.value);
+  }
+
+  function handleAddParticipant(newParticipant, taskId) {
+
+    console.log(newParticipant, taskId);
+
+    const tasksDataCopy = [...tasksData];
+    console.log(tasksDataCopy);
+
+    const taskIndex = tasksData.findIndex(task => task.id === taskId);
+    console.log(taskIndex);
+
+    //const taskParticipants = tasksData[taskIndex].participants;
+    tasksDataCopy[taskIndex].participants.push(newParticipant);
+    console.log(tasksDataCopy[taskIndex].participants);
   }
 
   let tasksArr = tasks.filter(task => task.status !== "finished").sort(
@@ -38,7 +57,13 @@ export default function TasksList() {
       </div>
       {
         (tasksArr.length !== 0) ? 
-        tasksArr.map(task => <Task taskData={task} key={task.id}/>) :
+        tasksArr.map(task => 
+          <Task 
+            taskData={task} 
+            key={task.id}
+            onAddParticipant={handleAddParticipant}
+          />
+        ) :
         <h3 className={tasksList.warning}>
           There are no tasks or all tasks are filtered
         </h3>
