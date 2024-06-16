@@ -1,5 +1,5 @@
 export default function useTasks() {
-  const tasks = [
+  const tasksData = [
     {
       id: 1, 
       startDate: "2024.05.13", 
@@ -62,6 +62,6 @@ export default function useTasks() {
   return {
     error,
     filterText,
-    tasks
+    tasksData
   }
 }

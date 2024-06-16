@@ -3,7 +3,7 @@ import Task from "../task/Task.js";
 import SortSelect from "../sortSelect/SortSelect.js";
 import Search from "../search/Search.js";
 
-import { useState } from "react";
+import { useState, useReducer } from "react";
 import useTasks from "../../hooks/useTasks.js";
 
 
@@ -42,23 +42,89 @@ function sortByParticipantsNumber(taskA, taskB) {
 }
 
 
+function sortById(taskA, taskB) {
+  return taskA.id - taskB.id;
+}
+
+
 export default function TasksList() {
   const [searchText, setSearchText] = useState("");
-  const {error, filterText, tasks} = useTasks();
-  const [tasksData, setTasksData] = useState(tasks);
+  const {error, filterText, tasksData} = useTasks();
   const [sortType, setSortType] = useState("none");
+  const [tasks, dispatch] = useReducer(handleTasks, tasksData);
 
   if (error) {
     return null;
   }
 
-  
+
+  function handleTasks(tasks, action) {
+    switch(action.type) {
+      case "complete": {
+        return tasks.map(task => {
+          if (task.id === +action.taskId) {
+            return {
+              ...task,
+              status: "finished"
+            }
+          } else {
+            return task;
+          }
+        })
+      }
+
+      case "addParticipant": {
+        const tasksCopy = JSON.parse(JSON.stringify(tasks));
+
+        tasksCopy.map(task => {
+          if (task.id === +action.task.id) {
+            const newParticipants = task.participants;
+            newParticipants.push(action.task.name);
+
+            return {
+              ...task,
+              participants: newParticipants
+            }
+          } else {
+            return task;
+          }
+        })
+
+        if (sortType === "number") {
+          tasksCopy.sort((taskA, taskB) => sortByParticipantsNumber(taskA, taskB));
+        }
+
+        return tasksCopy;
+      }
+      
+      case "sort": {
+        const tasksCopy = JSON.parse(JSON.stringify(tasks));
+
+        setSortType(action.sortType);
+
+        switch(action.sortType) {
+          case "start":
+          case "finish": {
+            return tasksCopy.sort((taskA, taskB) => sortTasksByDate(action.sortType, taskA, taskB));
+          }
+          case "number": {
+            return tasksCopy.sort((taskA, taskB) => sortByParticipantsNumber(taskA, taskB));
+          }
+          default: return tasksCopy.sort((taskA, taskB) => sortById(taskA, taskB));
+        }
+      }
+
+      default: return tasks;
+    }
+  }
+
+
   function handleInputSearch(e) {
     setSearchText(e.target.value);
   }
 
 
-  function handleAddParticipant(newParticipant, taskId) {
+  function handleAddParticipant3(newParticipant, taskId) {
     const tasksDataCopy = JSON.parse(JSON.stringify(tasksData));
     const taskIndex = tasksDataCopy.findIndex(task => task.id === taskId);
     tasksDataCopy[taskIndex].participants.push(newParticipant);
@@ -67,7 +133,18 @@ export default function TasksList() {
       tasksDataCopy.sort((taskA, taskB) => (sortByParticipantsNumber(taskA, taskB)));
     }
 
-    setTasksData(tasksDataCopy);
+    //setTasksData(tasksDataCopy);
+  }
+
+
+  function handleAddParticipant(newParticipant, taskId) {
+    dispatch({
+      type:"addParticipant",
+      task: {
+        name: newParticipant,
+        id: taskId
+      }
+    })
   }
 
 
@@ -77,21 +154,21 @@ export default function TasksList() {
     switch(type) {
       case "start": {
         tasksDataCopy.sort((taskA, taskB) => sortTasksByDate("start", taskA, taskB));
-        setTasksData(tasksDataCopy);
+        //setTasksData(tasksDataCopy);
         break;
       }
       case "finish": {
         tasksDataCopy.sort((taskA, taskB) => sortTasksByDate("finish", taskA, taskB));
-        setTasksData(tasksDataCopy);
+        //setTasksData(tasksDataCopy);
         break;
       }
       case "number": {
         tasksDataCopy.sort((taskA, taskB) => sortByParticipantsNumber(taskA, taskB));
-        setTasksData(tasksDataCopy);
+        //setTasksData(tasksDataCopy);
         break;
       }
       default: {
-        setTasksData(tasks);
+        //setTasksData(initialTasks);
         break;
       }
     }
@@ -100,15 +177,22 @@ export default function TasksList() {
   }
 
 
-  function handleTaskComplete(taskId) {
-    const tasksDataCopy = JSON.parse(JSON.stringify(tasksData));
-    const taskIndex = tasksDataCopy.findIndex(task => task.id === taskId);
-    tasksDataCopy[taskIndex].status = "finished";
-    setTasksData(tasksDataCopy);
+  function handleSortSelect2(sortType) {
+    dispatch({
+      type: "sort",
+      sortType
+    })
   }
 
 
-  let tasksArr = tasksData.filter(task => task.status !== "finished");
+  function handleTaskComplete(taskId) {
+    dispatch({
+      type: "complete",
+      taskId
+    })
+  }
+
+  let tasksArr = tasks.filter(task => task.status !== "finished");
   tasksArr = tasksArr.filter(task => 
     task.description.toLowerCase().includes(searchText.toLowerCase()));
 
@@ -117,7 +201,7 @@ export default function TasksList() {
     <div className={tasksList.tasksList}>
       <div className={tasksList.header}>
         <h2 className={tasksList.title}>{filterText}</h2>
-        <SortSelect options={sortOptions} onOptionChange={handleSortSelect}/>
+        <SortSelect options={sortOptions} onOptionChange={handleSortSelect2}/>
         <Search onInputSearch={handleInputSearch}/>
       </div>
       {
