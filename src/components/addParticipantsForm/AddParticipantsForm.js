@@ -38,6 +38,7 @@ export default function AddParticipantsForm({onAddParticipant}) {
           onChange={handleChangeTextInput}
         />
         <button className={addFormStyles.addBtn} type="submit" disabled={disable}>Add</button>
+        &nbsp;
         <span>{errors}</span>
       </fieldset>
     </form>
