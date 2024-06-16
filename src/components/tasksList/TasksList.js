@@ -52,9 +52,11 @@ export default function TasksList() {
     return null;
   }
 
+  
   function handleInputSearch(e) {
     setSearchText(e.target.value);
   }
+
 
   function handleAddParticipant(newParticipant, taskId) {
     const tasksDataCopy = JSON.parse(JSON.stringify(tasksData));
@@ -97,9 +99,19 @@ export default function TasksList() {
     setSortType(type);
   }
 
+
+  function handleTaskComplete(taskId) {
+    const tasksDataCopy = JSON.parse(JSON.stringify(tasksData));
+    const taskIndex = tasksDataCopy.findIndex(task => task.id === taskId);
+    tasksDataCopy[taskIndex].status = "finished";
+    setTasksData(tasksDataCopy);
+  }
+
+
   let tasksArr = tasksData.filter(task => task.status !== "finished");
   tasksArr = tasksArr.filter(task => 
     task.description.toLowerCase().includes(searchText.toLowerCase()));
+
 
   return (
     <div className={tasksList.tasksList}>
@@ -114,7 +126,8 @@ export default function TasksList() {
           <Task 
             taskData={task} 
             key={task.id}
-            onAddParticipant={handleAddParticipant}/>
+            onAddParticipant={handleAddParticipant}
+            onTaskComplete={handleTaskComplete}/>
         ) :
         <h3 className={tasksList.warning}>
           There are no tasks or all tasks are filtered

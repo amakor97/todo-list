@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import AddParticipantsForm from "../addParticipantsForm/AddParticipantsForm.js";
 
-export default function Task({taskData, onAddParticipant}) {
+export default function Task({taskData, onAddParticipant, onTaskComplete}) {
   const [isCardOpened, setIsCardOpened] = useState(false);
   const [isAddFormShowed, setAddFormShowed] = useState(false);
 
@@ -27,7 +27,13 @@ export default function Task({taskData, onAddParticipant}) {
     onAddParticipant(newParticipant, taskData.id);
   }
 
-  
+
+  function handleCompleteBtnClick(e) {
+    e.stopPropagation();
+    onTaskComplete(taskData.id);
+  }
+
+
   return (
     <div className={task.task}>
       <div className={task.header} onClick={handleClickEvent}>
@@ -55,7 +61,7 @@ export default function Task({taskData, onAddParticipant}) {
             <p>started: {taskData.startDate}</p>
             <button 
               className={task.completeBtn} 
-              onClick={(e) => e.stopPropagation()}>
+              onClick={handleCompleteBtnClick}>
                 Complete
             </button>
           </div>
