@@ -61,22 +61,18 @@ export default function TasksList() {
     const taskIndex = tasksDataCopy.findIndex(task => task.id === taskId);
     tasksDataCopy[taskIndex].participants.push(newParticipant);
 
-
     if (sortType === "number") {
       tasksDataCopy.sort((taskA, taskB) => (sortByParticipantsNumber(taskA, taskB)));
-      setTasksData(tasksDataCopy);
-    } else {
-      setTasksData(tasksDataCopy);
     }
 
-
+    setTasksData(tasksDataCopy);
   }
 
+
   function handleSortSelect(type) {
-    const sortSelected = type;
     const tasksDataCopy = JSON.parse(JSON.stringify(tasksData));
 
-    switch(sortSelected) {
+    switch(type) {
       case "start": {
         tasksDataCopy.sort((taskA, taskB) => sortTasksByDate("start", taskA, taskB));
         setTasksData(tasksDataCopy);
@@ -88,7 +84,7 @@ export default function TasksList() {
         break;
       }
       case "number": {
-        tasksDataCopy.sort((taskA, taskB) => (sortByParticipantsNumber(taskA, taskB)));
+        tasksDataCopy.sort((taskA, taskB) => sortByParticipantsNumber(taskA, taskB));
         setTasksData(tasksDataCopy);
         break;
       }
@@ -98,7 +94,7 @@ export default function TasksList() {
       }
     }
 
-    setSortType(sortSelected);
+    setSortType(type);
   }
 
   let tasksArr = tasksData.filter(task => task.status !== "finished");
@@ -118,8 +114,7 @@ export default function TasksList() {
           <Task 
             taskData={task} 
             key={task.id}
-            onAddParticipant={handleAddParticipant}
-          />
+            onAddParticipant={handleAddParticipant}/>
         ) :
         <h3 className={tasksList.warning}>
           There are no tasks or all tasks are filtered

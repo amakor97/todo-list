@@ -5,25 +5,29 @@ import { useState } from "react";
 import AddParticipantsForm from "../addParticipantsForm/AddParticipantsForm.js";
 
 export default function Task({taskData, onAddParticipant}) {
-  const commentsStr = taskData.comments.join(", ");
-  const participantsStr = taskData.participants.join(", ");
-
   const [isCardOpened, setIsCardOpened] = useState(false);
   const [isAddFormShowed, setAddFormShowed] = useState(false);
 
+  const commentsStr = taskData.comments.join(", ");
+  const participantsStr = taskData.participants.join(", ");
+
+  
   function handleClickEvent() {
     setIsCardOpened(!isCardOpened);
   }
 
+
   function handleAddParticipantsEvent() {
     setAddFormShowed(!isAddFormShowed);
   }
+
 
   function handleAddParticipantEvent(newParticipant) {
     setAddFormShowed(false);
     onAddParticipant(newParticipant, taskData.id);
   }
 
+  
   return (
     <div className={task.task}>
       <div className={task.header} onClick={handleClickEvent}>
@@ -42,7 +46,7 @@ export default function Task({taskData, onAddParticipant}) {
                   <button 
                     className={task.addParticipantsBtn} 
                     onClick={handleAddParticipantsEvent}>
-                    +
+                      +
                   </button>
               }
               </div>
@@ -52,7 +56,7 @@ export default function Task({taskData, onAddParticipant}) {
             <button 
               className={task.completeBtn} 
               onClick={(e) => e.stopPropagation()}>
-              Complete
+                Complete
             </button>
           </div>
         </>

@@ -38,3 +38,9 @@
 
   background-color: #1a1a47;
 }
+
+.addBtn:disabled {
+  color: #1a1a47;
+  background-color: grey;
+}
+
