@@ -24,7 +24,6 @@ export default function AddParticipantsForm({onAddParticipant}) {
 
   function handleSubmit(e) {
     e.preventDefault();
-
     onAddParticipant(newParticipant);
   }
 
@@ -33,12 +32,13 @@ export default function AddParticipantsForm({onAddParticipant}) {
     <form className={addFormStyles.addForm} onSubmit={handleSubmit}>
       <fieldset className={addFormStyles.fieldset}>
         <input
+          className={addFormStyles.textInput}
           type="text"
           name="newParticipant"
           onChange={handleChangeTextInput}
         />
+        <button className={addFormStyles.addBtn} type="submit" disabled={disable}>Add</button>
         <span>{errors}</span>
-        <button type="submit" disabled={disable}>Add</button>
       </fieldset>
     </form>
   )

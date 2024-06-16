@@ -17,11 +17,6 @@ export default function Task({taskData, onAddParticipant}) {
 
   function handleAddParticipantsEvent() {
     setAddFormShowed(!isAddFormShowed);
-    console.log(isAddFormShowed);
-  }
-
-  function handleShowFormEvent() {
-    setAddFormShowed(true);
   }
 
   function handleAddParticipantEvent(newParticipant) {
