@@ -26,7 +26,6 @@
   color: #1a1a47;
 
   border: 2px solid #1a1a47;
-  border-radius: 0 8px 8px 0;
   background-color: transparent;
   cursor: pointer;
 
@@ -44,3 +43,22 @@
   background-color: grey;
 }
 
+.closeBtn {
+  height: 24px;
+  padding: 4px;
+
+  color: #1a1a47;
+
+  border: 2px solid #1a1a47;
+  border-radius: 0 8px 8px 0;
+  background-color: transparent;
+  cursor: pointer;
+
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.closeBtn:hover {
+  color: white;
+
+  background-color: #1a1a47;
+}

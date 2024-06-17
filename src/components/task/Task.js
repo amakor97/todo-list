@@ -18,13 +18,18 @@ export default function Task({taskData, onAddParticipant, onTaskComplete}) {
 
 
   function handleAddParticipantsEvent() {
-    setAddFormShowed(!isAddFormShowed);
+    setAddFormShowed(true);
   }
 
 
   function handleAddParticipantEvent(newParticipant) {
     setAddFormShowed(false);
     onAddParticipant(newParticipant, taskData.id);
+  }
+
+
+  function handleCloseAddParticipantForm() {
+    setAddFormShowed(false);
   }
 
 
@@ -48,7 +53,9 @@ export default function Task({taskData, onAddParticipant, onTaskComplete}) {
               <p>participants: {participantsStr} &nbsp;</p>
               {
                 isAddFormShowed ? 
-                  <AddParticipantsForm onAddParticipant={handleAddParticipantEvent}/> : 
+                  <AddParticipantsForm 
+                    onAddParticipant={handleAddParticipantEvent} 
+                    onCloseForm={handleCloseAddParticipantForm}/> : 
                   <button 
                     className={task.addParticipantsBtn} 
                     onClick={handleAddParticipantsEvent}>

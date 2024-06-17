@@ -2,7 +2,7 @@ import addFormStyles from "./addParticipantsForm.module.css";
 
 import { useState } from "react";
 
-export default function AddParticipantsForm({onAddParticipant}) {
+export default function AddParticipantsForm({onAddParticipant, onCloseForm}) {
   const [newParticipant, setNewParticipant] = useState("");
   const [errors, setErrors] = useState(null);
   const [disable, setDisabled] = useState(true);
@@ -27,9 +27,8 @@ export default function AddParticipantsForm({onAddParticipant}) {
     onAddParticipant(newParticipant);
   }
 
-
   return (
-    <form className={addFormStyles.addForm} onSubmit={handleSubmit}>
+    <form className={addFormStyles.addForm} onSubmit={handleSubmit} onReset={onCloseForm}>
       <fieldset className={addFormStyles.fieldset}>
         <input
           className={addFormStyles.textInput}
@@ -38,6 +37,7 @@ export default function AddParticipantsForm({onAddParticipant}) {
           onChange={handleChangeTextInput}
         />
         <button className={addFormStyles.addBtn} type="submit" disabled={disable}>Add</button>
+        <button className={addFormStyles.closeBtn} type="reset">Close</button>
         &nbsp;
         <span>{errors}</span>
       </fieldset>
