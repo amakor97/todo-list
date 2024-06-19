@@ -49,10 +49,6 @@ function App() {
   const [sortType, setSortType] = useState(sortOptions[0].value);
   const [tasks, dispatch] = useReducer(handleTasks, tasksData);
 
-  if (error) {
-    return null;
-  }
-
   function handleTasks(tasks, action) {
     switch(action.type) {
       case "complete": {
@@ -60,7 +56,7 @@ function App() {
           if (task.id === +action.taskId) {
             return {
               ...task,
-              status: "finished"
+              status: "finished",
             }
           } else {
             return task;
@@ -108,6 +104,12 @@ function App() {
         }
       }
 
+      case "addTask": {
+        const tasksCopy = JSON.parse(JSON.stringify(tasks));
+        tasksCopy.push(action.newTask);
+        return tasksCopy;
+      }
+
       default: return tasks;
     }
   }
@@ -116,8 +118,10 @@ function App() {
   return (
     <div>
       <Header/>
-      <PageSettings.Provider value={{tasks, error, filterText, dispatch}}>
-        <TasksList/>
+      <PageSettings.Provider value={{tasks, filterText, dispatch}}>
+        {
+          error ? null : <TasksList/>
+        }
       </PageSettings.Provider>
       <Footer/>
     </div>

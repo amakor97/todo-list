@@ -2,6 +2,7 @@ import tasksList from "./tasksList.module.css";
 import Task from "../task/Task.js";
 import SortSelect from "../sortSelect/SortSelect.js";
 import Search from "../search/Search.js";
+import AddTaskForm from "../addTaskForm/AddTaskForm.js";
 
 import { useState, useContext } from "react";
 import { PageSettings } from "../../pageSettings.js";
@@ -16,6 +17,7 @@ const sortOptions = [
 
 export default function TasksList() {
   const [searchText, setSearchText] = useState("");
+  const [isAddTaskFormShowed, setAddTaskFormShowed] = useState(false);
   const contextData = useContext(PageSettings);
 
   const error = contextData.error;
@@ -27,67 +29,15 @@ export default function TasksList() {
     return null;
   }
 
-/*
-  function handleTasks(tasks, action) {
-    switch(action.type) {
-      case "complete": {
-        return tasks.map(task => {
-          if (task.id === +action.taskId) {
-            return {
-              ...task,
-              status: "finished"
-            }
-          } else {
-            return task;
-          }
-        })
+  function getMaxTaskId(tasks) {
+    let maxId = 0;
+    tasks.forEach(task => {
+      if (task.id > maxId) {
+        maxId = task.id;
       }
-
-      case "addParticipant": {
-        const tasksCopy = JSON.parse(JSON.stringify(tasks));
-
-        tasksCopy.map(task => {
-          if (task.id === +action.task.id) {
-            const newParticipants = task.participants;
-            newParticipants.push(action.task.name);
-
-            return {
-              ...task,
-              participants: newParticipants
-            }
-          } else {
-            return task;
-          }
-        })
-
-        //if (sortType === "number") {
-          tasksCopy.sort((taskA, taskB) => sortByParticipantsNumber(taskA, taskB));
-        //}
-
-        return tasksCopy;
-      }
-      
-      case "sort": {
-        const tasksCopy = JSON.parse(JSON.stringify(tasks));
-
-        //setSortType(action.sortType);
-
-        switch(action.sortType) {
-          case "start":
-          case "finish": {
-            return tasksCopy.sort((taskA, taskB) => sortTasksByDate(action.sortType, taskA, taskB));
-          }
-          case "number": {
-            return tasksCopy.sort((taskA, taskB) => sortByParticipantsNumber(taskA, taskB));
-          }
-          default: return tasksCopy.sort((taskA, taskB) => sortById(taskA, taskB));
-        }
-      }
-
-      default: return tasks;
-    }
+    })
+    return maxId;
   }
-*/
 
   function handleInputSearch(e) {
     setSearchText(e.target.value);
@@ -120,7 +70,26 @@ export default function TasksList() {
     })
   }
 
+  function handleClickAddFormBtn() {
+    setAddTaskFormShowed(true);
+  }
   
+  function handleAddTask(newTask) {
+    let newId = getMaxTaskId(tasks) + 1;
+    newTask.status = "not finished";
+    newTask.id = newId;
+
+    setAddTaskFormShowed(false);
+    dispatch({
+      type: "addTask",
+      newTask
+    });
+  }
+
+  function handleCancelAddingTask() {
+    setAddTaskFormShowed(false);
+  }
+
   let tasksArr = tasks.filter(task => task.status !== "finished");
   tasksArr = tasksArr.filter(task => 
     task.description.toLowerCase().includes(searchText.toLowerCase()));
@@ -145,6 +114,17 @@ export default function TasksList() {
         <h3 className={tasksList.warning}>
           There are no tasks or all tasks are filtered
         </h3>
+      }
+      {
+        isAddTaskFormShowed ? 
+        <AddTaskForm 
+          onAddTask={handleAddTask} 
+          onCancelAddingTask={handleCancelAddingTask}/> : 
+        <button 
+          className={tasksList.addTaskFormBtn} 
+          onClick={handleClickAddFormBtn}>
+            Add task
+        </button>
       }
     </div>
   );
