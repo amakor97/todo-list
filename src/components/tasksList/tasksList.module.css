@@ -19,6 +19,13 @@
   color: rgb(35, 106, 138);
 }
 
+.linksCont {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
 .addTaskFormBtn {
   width: 800px;
   height: 67px;

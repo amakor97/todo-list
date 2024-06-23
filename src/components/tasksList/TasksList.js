@@ -1,10 +1,12 @@
 import tasksList from "./tasksList.module.css";
+
+import TaskLink from "../taskLink/TaskLink.js";
 import Task from "../task/Task.js";
 import SortSelect from "../sortSelect/SortSelect.js";
 import Search from "../search/Search.js";
 import AddTaskForm from "../addTaskForm/AddTaskForm.js";
 
-import { useState, useContext } from "react";
+import { useState, useContext, useRef } from "react";
 import { PageSettings } from "../../pageSettings.js";
 
 const sortOptions = [
@@ -20,6 +22,8 @@ export default function TasksList() {
   const [isAddTaskFormShowed, setAddTaskFormShowed] = useState(false);
   const contextData = useContext(PageSettings);
 
+  const refElem = useRef(null);
+
   const error = contextData.error;
   const dispatch = contextData.dispatch;
   const tasks = contextData.tasks;
@@ -28,6 +32,7 @@ export default function TasksList() {
   if (error) {
     return null;
   }
+
 
   function getMaxTaskId(tasks) {
     let maxId = 0;
@@ -90,6 +95,14 @@ export default function TasksList() {
     setAddTaskFormShowed(false);
   }
 
+
+  function handleScroll(ref) {
+    const targetElem = document.getElementById(`task-id-${ref}`);
+    refElem.current = targetElem;
+    refElem.current.scrollIntoView();
+  }
+
+
   let tasksArr = tasks.filter(task => task.status !== "finished");
   tasksArr = tasksArr.filter(task => 
     task.description.toLowerCase().includes(searchText.toLowerCase()));
@@ -104,9 +117,21 @@ export default function TasksList() {
       </div>
       {
         (tasksArr.length !== 0) ? 
+        <div className={tasksList.linksCont}>
+          {
+            tasksArr.map(task => 
+            <TaskLink taskNum={task.id} onLinkClick={handleScroll} key={task.id}/>)
+          }
+        </div> :
+        null
+      }
+
+      {
+        (tasksArr.length !== 0) ? 
         tasksArr.map(task => 
           <Task 
             taskData={task} 
+            id={`task-id-${task.id}`}
             key={task.id}
             onAddParticipant={handleAddParticipant}
             onTaskComplete={handleTaskComplete}/>

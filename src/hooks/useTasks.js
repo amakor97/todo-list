@@ -16,7 +16,7 @@ export default function useTasks() {
       comments: ["not important"], 
       description: "enjoy vacation", 
       participants: ["myself"],
-      status: "finished"
+      status: "not finished"
     },
     {
       id: 3, 
@@ -34,7 +34,7 @@ export default function useTasks() {
       comments: ["important"], 
       description: "go to see a doctor", 
       participants: ["myself"],
-      status: "finished"
+      status: "not finished"
     },
     {
       id: 5, 

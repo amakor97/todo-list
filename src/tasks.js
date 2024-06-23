@@ -15,7 +15,7 @@ export default [
     comments: ["not important"], 
     description: "enjoy vacation", 
     participants: ["myself"],
-    status: "finished"
+    status: "not finished"
   },
   {
     id: 3, 
@@ -33,7 +33,7 @@ export default [
     comments: ["important"], 
     description: "go to see a doctor", 
     participants: ["myself"],
-    status: "finished"
+    status: "not finished"
   },
   {
     id: 5, 
