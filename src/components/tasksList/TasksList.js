@@ -22,12 +22,13 @@ export default function TasksList() {
   const [isAddTaskFormShowed, setAddTaskFormShowed] = useState(false);
   const contextData = useContext(PageSettings);
 
-  const refElem = useRef(null);
-
   const error = contextData.error;
   const dispatch = contextData.dispatch;
   const tasks = contextData.tasks;
   const filterText = contextData.filterText;
+
+  const taskRefs = useRef([]);
+
 
   if (error) {
     return null;
@@ -96,16 +97,20 @@ export default function TasksList() {
   }
 
 
-  function handleScroll(ref) {
-    const targetElem = document.getElementById(`task-id-${ref}`);
-    refElem.current = targetElem;
-    refElem.current.scrollIntoView();
+  function handleScroll(taskId) {
+    taskRefs.current = taskRefs.current.filter(task => task);
+    taskRefs.current.forEach(task => {
+      if (task.id.indexOf(taskId.toString()) !== -1) {
+        task.scrollIntoView();
+      };
+    });
   }
 
 
   let tasksArr = tasks.filter(task => task.status !== "finished");
   tasksArr = tasksArr.filter(task => 
     task.description.toLowerCase().includes(searchText.toLowerCase()));
+
 
 
   return (
@@ -120,7 +125,7 @@ export default function TasksList() {
         <div className={tasksList.linksCont}>
           {
             tasksArr.map(task => 
-            <TaskLink taskNum={task.id} onLinkClick={handleScroll} key={task.id}/>)
+            <TaskLink taskId={task.id} onLinkClick={handleScroll} key={task.id}/>)
           }
         </div> :
         null
@@ -128,8 +133,9 @@ export default function TasksList() {
 
       {
         (tasksArr.length !== 0) ? 
-        tasksArr.map(task => 
+        tasksArr.map((task) => 
           <Task 
+            ref={el => taskRefs.current.push(el)}
             taskData={task} 
             id={`task-id-${task.id}`}
             key={task.id}

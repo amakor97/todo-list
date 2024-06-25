@@ -7,6 +7,6 @@ export default function Search({onInputSearch}) {
       className={search.search} 
       onChange={(e) => onInputSearch(e)} 
       placeholder="Search task..."
-    ></input>
+    />
   );
 }
