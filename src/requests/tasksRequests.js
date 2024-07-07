@@ -61,6 +61,25 @@ export function getTasks() {
   });
 }
 
+export function getTasksByCategory(category) {
+  let tasksByCategory = [];
+
+  switch(category) {
+    case "/opened": {
+      tasksByCategory = tasks.filter(task => task.status === "not finished");
+      break;
+    }
+    case "/closed": {
+      tasksByCategory = tasks.filter(task => task.status === "finished");
+      break;
+    }
+  }
+
+  return new Promise(function(resolve, reject) {
+    setTimeout(() => resolve(tasksByCategory), 1000);
+  })
+}
+
 export function getTasksByTimeStatus(timeStatus) {
 
   let tasksByTimeStatus = [];
@@ -99,3 +118,5 @@ export function getTasksByTitle(filterText) {
     resolve(tasksByTitle);
   });
 }
+
+

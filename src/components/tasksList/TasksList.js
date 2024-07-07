@@ -6,11 +6,11 @@ import SortSelect from "../sortSelect/SortSelect.js";
 import Search from "../search/Search.js";
 import AddTaskForm from "../addTaskForm/AddTaskForm.js";
 
-import { getTasks, getTasksByTimeStatus } from "../../requests/tasksRequests.js";
+import { getTasks, getTasksByCategory, getTasksByTimeStatus, getTasksByTitle } from "../../requests/tasksRequests.js";
 
 import { useState, useContext, useRef } from "react";
 import { PageSettings } from "../../pageSettings.js";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, Form, useSubmit, useLocation } from "react-router-dom";
 
 const sortOptions = [
   {id: 1, name: "Select sort", value: "none"},
@@ -28,22 +28,7 @@ export async function tasksLoader() {
 
 export async function tasksByCategoryLoader({request}) {
   const url = new URL(request.url);
-  console.log(url.pathname);
-  let tasks = await getTasks();
-  
-
-  switch(url.pathname) {
-    case "/opened": {
-      console.log("o1");
-      tasks = await tasks.filter(task => task.status === "not finished");
-      break;
-    }
-    case "/closed": {
-      console.log("f1");
-      tasks = await tasks.filter(task => task.status === "finished");
-      break;
-    }
-  }
+  let tasks = await getTasksByCategory(url.pathname);
 
   return {tasks};
 }
@@ -56,11 +41,21 @@ export async function tasksByStatusLoader({params}) {
 }
 
 
+export async function tasksByTitleLoader({request}) {
+  const url = new URL(request.url);
+  const taskFilter = url.searchParams.get("task_filter");
+  const tasks = await getTasksByTitle(taskFilter);
+  return {tasks};
+}
+
 
 export default function TasksList() {
   const [searchText, setSearchText] = useState("");
   const [isAddTaskFormShowed, setAddTaskFormShowed] = useState(false);
   const contextData = useContext(PageSettings);
+
+  const location = useLocation();
+  console.log({location});
 
   const error = contextData.error;
   const dispatch = contextData.dispatch;
@@ -87,9 +82,6 @@ export default function TasksList() {
     return maxId;
   }
 
-  function handleInputSearch(e) {
-    setSearchText(e.target.value);
-  }
 
 
   function handleAddParticipant(newParticipant, taskId) {
@@ -149,7 +141,6 @@ export default function TasksList() {
   }
 
 
-  //let tasksArr = tasks.filter(task => task.status !== "finished");
   let tasksArr = tasks;
   tasksArr = tasksArr.filter(task => 
     task.description.toLowerCase().includes(searchText.toLowerCase()));
@@ -161,7 +152,7 @@ export default function TasksList() {
       <div className={tasksList.header}>
         <h2 className={tasksList.title}>{filterText}</h2>
         <SortSelect options={sortOptions} onOptionChange={handleSortSelect}/>
-        <Search onInputSearch={handleInputSearch}/>
+        {(location.pathname === "/") && <Search/>}
       </div>
       {
         (tasksArr.length !== 0) ? 
@@ -188,17 +179,6 @@ export default function TasksList() {
         <h3 className={tasksList.warning}>
           There are no tasks or all tasks are filtered
         </h3>
-      }
-      {
-        isAddTaskFormShowed ? 
-        <AddTaskForm 
-          onAddTask={handleAddTask} 
-          onCancelAddingTask={handleCancelAddingTask}/> : 
-        <button 
-          className={tasksList.addTaskFormBtn} 
-          onClick={handleClickAddFormBtn}>
-            Add task
-        </button>
       }
     </div>
   );

@@ -1,12 +1,18 @@
 import search from "./search.module.css";
 
+import { Form, useSubmit } from "react-router-dom";
 
 export default function Search({onInputSearch}) {
+  const submit = useSubmit();
+
   return (
-    <input 
-      className={search.search} 
-      onChange={(e) => onInputSearch(e)} 
-      placeholder="Search task..."
-    />
+    <Form>
+      <input 
+        type="search" name="task_filter"
+        className={search.search} 
+        onChange={(event) => {submit(event.currentTarget.form)}}
+        placeholder="Search task..."
+      />
+    </Form>
   );
 }
