@@ -4,7 +4,7 @@ import AddTaskForm from "../components/addTaskForm/AddTaskForm.js";
 import TasksList from "../components/tasksList/TasksList.js";
 import TasksPage from "../components/tasksPage/TasksPage.js";
 import categoryLoader from "../components/tasksPage/TasksPage.js";
-import { tasksLoader, tasksByCategoryLoader } from "../components/tasksList/TasksList.js";
+import { tasksLoader, tasksByCategoryLoader, tasksByStatusLoader } from "../components/tasksList/TasksList.js";
 import { render } from "react-dom";
 import { tasksLoaderImp } from "../App.js";
 
@@ -28,14 +28,9 @@ const routes = [
             loader: tasksByCategoryLoader,
           },
           {
-            path: "/opened/running",
+            path: ":status",
             element: <TasksList/>,
-            loader: tasksByCategoryLoader,
-          },
-          {
-            path: "/opened/expired",
-            element: <TasksList/>,
-            loader: tasksByCategoryLoader,
+            loader: tasksByStatusLoader,
           }
         ]
       },

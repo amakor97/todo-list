@@ -6,7 +6,7 @@ import SortSelect from "../sortSelect/SortSelect.js";
 import Search from "../search/Search.js";
 import AddTaskForm from "../addTaskForm/AddTaskForm.js";
 
-import { getTasks } from "../../requests/tasksRequests.js";
+import { getTasks, getTasksByTimeStatus } from "../../requests/tasksRequests.js";
 
 import { useState, useContext, useRef } from "react";
 import { PageSettings } from "../../pageSettings.js";
@@ -38,20 +38,6 @@ export async function tasksByCategoryLoader({request}) {
       tasks = await tasks.filter(task => task.status === "not finished");
       break;
     }
-    case "/opened/running": {
-      let date = new Date();
-      date = date.toISOString().slice(0, 10).replaceAll("-", ".");
-      console.log("o2");
-      tasks = await tasks.filter(task => (task.status === "not finished" && task.finishDate >= date));
-      break;
-    }
-    case "/opened/expired": {
-      let date = new Date();
-      date = date.toISOString().slice(0, 10).replaceAll("-", ".");
-      console.log("o3");
-      tasks = await tasks.filter(task => (task.status === "not finished" && task.finishDate < date));
-      break;
-    }
     case "/closed": {
       console.log("f1");
       tasks = await tasks.filter(task => task.status === "finished");
@@ -59,10 +45,17 @@ export async function tasksByCategoryLoader({request}) {
     }
   }
 
-
-  
   return {tasks};
 }
+
+export async function tasksByStatusLoader({params}) {
+  console.log(params.status);
+  const tasks = await getTasksByTimeStatus(params.status);
+  console.log(tasks);
+  return {tasks};
+}
+
+
 
 export default function TasksList() {
   const [searchText, setSearchText] = useState("");

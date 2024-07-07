@@ -60,3 +60,42 @@ export function getTasks() {
       setTimeout(() => resolve(tasks), 1000);
   });
 }
+
+export function getTasksByTimeStatus(timeStatus) {
+
+  let tasksByTimeStatus = [];
+  let date = new Date();
+  date = date.toISOString().slice(0, 10).replaceAll("-", ".");
+  
+  console.log(timeStatus);
+
+  switch (timeStatus) {
+    case "running": {
+      tasksByTimeStatus = tasks.filter(task => (task.status === "not finished" && task.finishDate >= date));
+      console.log(tasksByTimeStatus);
+      break;
+    }
+    case "expired": {
+      tasksByTimeStatus = tasks.filter(task => (task.status === "not finished" && task.finishDate < date));
+      break;
+    }
+  }
+
+  return new Promise(function(resolve, reject) {
+    setTimeout(() => resolve(tasksByTimeStatus), 1000);
+  })
+}
+
+
+export function getTasksByTitle(filterText) {
+  if (!filterText) return new Promise(function (resolve, reject) {
+    resolve(tasks);
+  });
+
+  const tasksByTitle = tasks.filter(task => 
+    task.description.toLowerCase().includes(filterText.toLowerCase()));
+
+  return new Promise(function (resolve, reject) {
+    resolve(tasksByTitle);
+  });
+}
