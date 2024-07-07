@@ -1,7 +1,4 @@
 import Header from "./components/header/Header.js";
-import SideMenu from "./components/sideMenu/SideMenu.js";
-import TasksList from "./components/tasksList/TasksList.js";
-import TasksPage from "./components/tasksPage/TasksPage.js";
 import Footer from "./components/footer/Footer.js";
 
 import app from "./app.module.css";
