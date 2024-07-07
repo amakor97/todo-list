@@ -81,17 +81,14 @@ export function getTasksByCategory(category) {
 }
 
 export function getTasksByTimeStatus(timeStatus) {
-
   let tasksByTimeStatus = [];
   let date = new Date();
   date = date.toISOString().slice(0, 10).replaceAll("-", ".");
-  
-  console.log(timeStatus);
+
 
   switch (timeStatus) {
     case "running": {
       tasksByTimeStatus = tasks.filter(task => (task.status === "not finished" && task.finishDate >= date));
-      console.log(tasksByTimeStatus);
       break;
     }
     case "expired": {

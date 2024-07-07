@@ -34,9 +34,7 @@ export async function tasksByCategoryLoader({request}) {
 }
 
 export async function tasksByStatusLoader({params}) {
-  console.log(params.status);
   const tasks = await getTasksByTimeStatus(params.status);
-  console.log(tasks);
   return {tasks};
 }
 
@@ -55,7 +53,6 @@ export default function TasksList() {
   const contextData = useContext(PageSettings);
 
   const location = useLocation();
-  console.log({location});
 
   const error = contextData.error;
   const dispatch = contextData.dispatch;
@@ -63,7 +60,6 @@ export default function TasksList() {
   const {tasks} = useLoaderData();
   const filterText = contextData.filterText;
 
-  console.log(tasks);
   const taskRefs = useRef([]);
 
 
