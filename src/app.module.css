@@ -1,0 +1,17 @@
+.cont {
+  position: absolute;
+  left: -32px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  padding-left: 40px;
+
+  font-size: 24px;
+
+  border: 8px solid rgb(35, 106, 138);
+  border-left: none;
+  border-radius: 32px;;
+}

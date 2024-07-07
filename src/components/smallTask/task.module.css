@@ -1,0 +1,7 @@
+.task {
+  padding: 8px;
+  margin-bottom: 4px;
+
+  border: 4px solid rgb(35, 106, 138);
+  border-radius: 8px;
+}

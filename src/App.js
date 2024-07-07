@@ -1,10 +1,19 @@
 import Header from "./components/header/Header.js";
+import SideMenu from "./components/sideMenu/SideMenu.js";
 import TasksList from "./components/tasksList/TasksList.js";
+import TasksPage from "./components/tasksPage/TasksPage.js";
 import Footer from "./components/footer/Footer.js";
 
+import app from "./app.module.css";
+
+import { getTasks } from "./requests/tasksRequests.js";
+
+import { NavLink, Outlet, useLoaderData } from "react-router-dom";
 import { useState, useReducer } from "react";
 import useTasks from "./hooks/useTasks.js";
 import { PageSettings } from "./pageSettings.js";
+import SmallTask from "./components/smallTask/SmallTask.js";
+
 
 const sortOptions = [
   {id: 1, name: "Select sort", value: "none"},
@@ -44,10 +53,19 @@ function sortById(taskA, taskB) {
   return taskA.id - taskB.id;
 }
 
+export async function tasksLoaderImp() {
+  let tasks2 = await getTasks();
+  let openTasksLen = tasks2.filter(task => task.status === "not finished").length;
+  tasks2 = tasks2.filter(task => task.comments.includes("important") && task.status === "not finished").splice(0, 2);
+  return {tasks2, openTasksLen};
+}
+
 function App() {
   const {error, filterText, tasksData} = useTasks();
   const [sortType, setSortType] = useState(sortOptions[0].value);
   const [tasks, dispatch] = useReducer(handleTasks, tasksData);
+
+  const {tasks2, openTasksLen} = useLoaderData();
 
   function handleTasks(tasks, action) {
     switch(action.type) {
@@ -117,9 +135,53 @@ function App() {
   return (
     <div>
       <Header/>
+      <aside className={app.cont}>
+        <div>
+          <p>Number of tasks: {openTasksLen}</p>
+        </div>
+        {
+          tasks2.map(task => <SmallTask task={task}/>)
+        }
+        <div>
+          <NavLink
+            to="/">
+              All
+          </NavLink>
+        </div>
+        <div>
+          <NavLink
+            to="/opened">
+              Open
+          </NavLink>
+        </div>
+        <div>
+          <NavLink
+            to="/opened/running">
+              Open-running
+          </NavLink>
+        </div>
+        <div>
+          <NavLink
+            to="/opened/expired">
+              Open-expired
+          </NavLink>
+        </div>
+        <div>
+          <NavLink
+            to="/closed">
+              Closed
+          </NavLink>
+        </div>
+        <div>
+          <NavLink
+            to="/add">
+              Add
+          </NavLink>
+        </div>
+      </aside>
       <PageSettings.Provider value={{tasks, filterText, dispatch}}>
         {
-          error ? null : <TasksList/>
+          error ? null : <Outlet/>
         }
       </PageSettings.Provider>
       <Footer/>

@@ -6,8 +6,11 @@ import SortSelect from "../sortSelect/SortSelect.js";
 import Search from "../search/Search.js";
 import AddTaskForm from "../addTaskForm/AddTaskForm.js";
 
+import { getTasks } from "../../requests/tasksRequests.js";
+
 import { useState, useContext, useRef } from "react";
 import { PageSettings } from "../../pageSettings.js";
+import { useLoaderData } from "react-router-dom";
 
 const sortOptions = [
   {id: 1, name: "Select sort", value: "none"},
@@ -16,6 +19,50 @@ const sortOptions = [
   {id: 4, name: "P-ants number", value: "number"}
 ];
 
+export async function tasksLoader() {
+  const tasks = await getTasks();
+  return {tasks};
+}
+
+
+
+export async function tasksByCategoryLoader({request}) {
+  const url = new URL(request.url);
+  console.log(url.pathname);
+  let tasks = await getTasks();
+  
+
+  switch(url.pathname) {
+    case "/opened": {
+      console.log("o1");
+      tasks = await tasks.filter(task => task.status === "not finished");
+      break;
+    }
+    case "/opened/running": {
+      let date = new Date();
+      date = date.toISOString().slice(0, 10).replaceAll("-", ".");
+      console.log("o2");
+      tasks = await tasks.filter(task => (task.status === "not finished" && task.finishDate >= date));
+      break;
+    }
+    case "/opened/expired": {
+      let date = new Date();
+      date = date.toISOString().slice(0, 10).replaceAll("-", ".");
+      console.log("o3");
+      tasks = await tasks.filter(task => (task.status === "not finished" && task.finishDate < date));
+      break;
+    }
+    case "/closed": {
+      console.log("f1");
+      tasks = await tasks.filter(task => task.status === "finished");
+      break;
+    }
+  }
+
+
+  
+  return {tasks};
+}
 
 export default function TasksList() {
   const [searchText, setSearchText] = useState("");
@@ -24,9 +71,11 @@ export default function TasksList() {
 
   const error = contextData.error;
   const dispatch = contextData.dispatch;
-  const tasks = contextData.tasks;
+  //const tasks = contextData.tasks;
+  const {tasks} = useLoaderData();
   const filterText = contextData.filterText;
 
+  console.log(tasks);
   const taskRefs = useRef([]);
 
 
@@ -107,7 +156,8 @@ export default function TasksList() {
   }
 
 
-  let tasksArr = tasks.filter(task => task.status !== "finished");
+  //let tasksArr = tasks.filter(task => task.status !== "finished");
+  let tasksArr = tasks;
   tasksArr = tasksArr.filter(task => 
     task.description.toLowerCase().includes(searchText.toLowerCase()));
 
