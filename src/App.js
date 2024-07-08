@@ -137,7 +137,7 @@ function App() {
           <p>Number of tasks: {openTasksLen}</p>
         </div>
         {
-          tasks2.map(task => <SmallTask task={task}/>)
+          tasks2.map(task => <SmallTask key={task.id} task={task}/>)
         }
         <div>
           <NavLink
