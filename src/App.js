@@ -3,10 +3,10 @@ import Footer from "./components/footer/Footer.js";
 
 import app from "./app.module.css";
 
-import { getTasks } from "./requests/tasksRequests.js";
+import { getImportantOpenedTasksFromLs, getTasks, getTasksFromLs } from "./requests/tasksRequests.js";
 
 import { NavLink, Outlet, useLoaderData } from "react-router-dom";
-import { useState, useReducer } from "react";
+import { useState, useReducer, useEffect } from "react";
 import useTasks from "./hooks/useTasks.js";
 import { PageSettings } from "./pageSettings.js";
 import SmallTask from "./components/smallTask/SmallTask.js";
@@ -56,6 +56,23 @@ export async function tasksLoaderImp() {
   tasks2 = tasks2.filter(task => task.comments.includes("important") && task.status === "not finished").splice(0, 2);
   return {tasks2, openTasksLen};
 }
+
+export async function tasksLoaderFromLs() {
+  let tasks2 = await getTasksFromLs();
+  let openTasksLen = tasks2.filter(task => task.status === "not finished").length;
+  return {tasks2, openTasksLen};
+}
+
+
+export async function tasksLoaderComplexFromLs() {
+  let tasks2 = await getTasksFromLs();
+  let openedImpTasks = await getImportantOpenedTasksFromLs();
+  let openTasksLen = tasks2.filter(task => task.status === "not finished").length;
+  console.log(tasks2);
+  console.log(openedImpTasks);
+  return {tasks2, openTasksLen};
+}
+
 
 function App() {
   const {error, filterText, tasksData} = useTasks();
@@ -128,6 +145,15 @@ function App() {
       default: return tasks;
     }
   }
+
+  function handleUnload() {
+    console.log(tasks);
+    window.localStorage.setItem("tasks", JSON.stringify(tasks));
+  }
+
+  useEffect(() => {
+    window.addEventListener("beforeunload", handleUnload);
+  }, []);
 
   return (
     <div>

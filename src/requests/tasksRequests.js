@@ -61,6 +61,24 @@ export function getTasks() {
   });
 }
 
+
+export function getTasksFromLs() {
+  const tasks = JSON.parse(window.localStorage.getItem("tasks"));
+  return new Promise(function(resolve, reject) {
+    setTimeout(() => resolve(tasks), 1000);
+  });
+}
+
+
+export function getImportantOpenedTasksFromLs() {
+  const tasks = JSON.parse(window.localStorage.getItem("tasks"));
+  const openedImpTasks = tasks.filter(task => task.comments.includes("important") && task.status === "not finished");
+  return new Promise(function(resolve, reject) {
+    setTimeout(() => resolve(openedImpTasks), 1000);
+  });
+}
+
+
 export function getTasksByCategory(category) {
   let tasksByCategory = [];
 

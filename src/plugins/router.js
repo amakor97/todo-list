@@ -1,15 +1,15 @@
 import { createBrowserRouter } from "react-router-dom";
-import App from "../App.js";
+import App, { tasksLoaderFromLs } from "../App.js";
 import AddTaskForm from "../components/addTaskForm/AddTaskForm.js";
 import TasksList from "../components/tasksList/TasksList.js";
 import { tasksLoader, tasksByCategoryLoader, tasksByStatusLoader, tasksByTitleLoader } from "../components/tasksList/TasksList.js";
-import { tasksLoaderImp } from "../App.js";
+import { tasksLoaderImp, tasksLoaderComplexFromLs } from "../App.js";
 
 const routes = [
   {
     path: "/",
     element: <App/>,
-    loader: tasksLoaderImp,
+    loader: tasksLoaderComplexFromLs,
     children: [
       {
         index: true,
