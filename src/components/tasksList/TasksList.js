@@ -55,8 +55,8 @@ export default function TasksList() {
   const location = useLocation();
 
   const dispatch = contextData.dispatch;
-  const tasks3 = contextData.tasks;
-  console.log(tasks3);
+  const srcTasks = contextData.srcTasks;
+  console.log(srcTasks);
   const {tasks} = useLoaderData();
   const filterText = contextData.filterText;
 

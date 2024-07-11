@@ -39,19 +39,19 @@ export default function TasksPage() {
   
   const contextData = useContext(PageSettings);
 
-  const tasks = contextData.tasks;
+  const srcTasks = contextData.srcTasks;
   const dispatch = contextData.dispatch;
   const filterText = "";
-  const fTask = tasks[0];
+  const fTask = srcTasks[0];
   console.log(fTask);
 
   console.log(contextData);
 
   //const {tasks} = useLoaderData();
-  console.log(tasks);
+  console.log(srcTasks);
 
   return (
-    <PageSettings.Provider value={{tasks, fTask, filterText, dispatch}}>
+    <PageSettings.Provider value={{srcTasks, fTask, filterText, dispatch}}>
       <TasksList/>
     </PageSettings.Provider>
   )

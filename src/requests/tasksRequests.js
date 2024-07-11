@@ -135,3 +135,13 @@ export function getTasksByTitle(filterText) {
 }
 
 
+export function getTaskById(id) {
+  console.log(id);
+
+  const task = tasks.find(task => task.id === +id);
+  console.log(task);
+
+  return new Promise(function (resolve, reject) {
+    resolve(task);
+  });
+}

@@ -3,6 +3,7 @@ import task from "./task.module.css";
 import { useState, forwardRef } from "react";
 
 import AddParticipantsForm from "../addParticipantsForm/AddParticipantsForm.js";
+import { NavLink } from "react-router-dom";
 
 export default forwardRef(
     function Task({taskData, onAddParticipant, onTaskComplete, id}, ref) {
@@ -67,6 +68,7 @@ export default forwardRef(
             </div>
             <div className={task.footer}>
               <p>started: {taskData.startDate}</p>
+              <NavLink className={task.completeBtn} to={"/" + taskData.id + "/update"}>Update</NavLink>
               <button 
                 className={task.completeBtn} 
                 onClick={handleCompleteBtnClick}>

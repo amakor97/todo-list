@@ -77,7 +77,7 @@ export async function tasksLoaderComplexFromLs() {
 function App() {
   const {error, filterText, tasksData} = useTasks();
   const [sortType, setSortType] = useState(sortOptions[0].value);
-  const [tasks, dispatch] = useReducer(handleTasks, tasksData);
+  const [srcTasks, dispatch] = useReducer(handleTasks, tasksData);
 
   const {tasks2, openTasksLen} = useLoaderData();
 
@@ -147,8 +147,8 @@ function App() {
   }
 
   function handleUnload() {
-    console.log(tasks);
-    window.localStorage.setItem("tasks", JSON.stringify(tasks));
+    console.log(srcTasks);
+    window.localStorage.setItem("tasks", JSON.stringify(srcTasks));
   }
 
   useEffect(() => {
@@ -202,7 +202,7 @@ function App() {
           </NavLink>
         </div>
       </aside>
-      <PageSettings.Provider value={{tasks, filterText, dispatch}}>
+      <PageSettings.Provider value={{srcTasks, filterText, dispatch}}>
         {
           error ? null : <Outlet/>
         }

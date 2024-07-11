@@ -1,6 +1,8 @@
 import addTaskForm from "./addTaskForm.module.css";
 
 import { useReducer } from "react";
+import { useContext } from "react";
+import { PageSettings } from "../../pageSettings.js";
 
 export default function AddTaskForm({onAddTask, onCancelAddingTask}) {
   const [tmpTask, dispatch] = useReducer(handleTmpTask, {
@@ -113,38 +115,56 @@ export default function AddTaskForm({onAddTask, onCancelAddingTask}) {
     onCancelAddingTask();
   }
 
+  const contextData = useContext(PageSettings);
+  let task = contextData.task;
+
+  console.log(task);
+
+  if (!task) {
+    task = {
+      description: "",
+      comments: [],
+      participants: [],
+
+    }
+  }
+
   return (
     <form className={addTaskForm.addTaskForm} 
       onSubmit={handleFormSubmit} onReset={handleFormReset}>
       <fieldset className={addTaskForm.fieldset}>
         <label className={addTaskForm.label} htmlFor="title">Task name:</label>
-        <input className={addTaskForm.inputText} type="text" 
+        {task ?         <input className={addTaskForm.inputText} type="text" 
           name="title" id="title" placeholder="Enter task name" 
-          onChange={handleTextInputChange} required/>
+          onChange={handleTextInputChange} value={task.description} disabled required/>
+        :         <input className={addTaskForm.inputText} type="text" 
+        name="title" id="title" placeholder="Enter task name" 
+        onChange={handleTextInputChange} required/>}
+
       </fieldset>
       <fieldset className={addTaskForm.fieldset}>
         <input className={addTaskForm.inputCheckbox} type="checkbox" 
-          name="flags" id="flags-imp" value="important" 
+          name="flags" id="flags-imp" value="important" checked={task.comments.includes("important") ? true : false}
           onChange={handleCheckboxInputChange}/>
         <label className={addTaskForm.labelCb} htmlFor="flags-imp">Important</label>
         <input className={addTaskForm.inputCheckbox} type="checkbox" 
-          name="flags" id="flags-lt" value="long-term" 
+          name="flags" id="flags-lt" value="long-term" checked={task.comments.includes("long-term") ? true : false} 
           onChange={handleCheckboxInputChange}/>
         <label className={addTaskForm.labelCb} htmlFor="flags-lt">Long-term</label>
       </fieldset>
       <fieldset className={addTaskForm.fieldset}>
         <label htmlFor="participants">Participants:</label>
         <input className={addTaskForm.inputText} type="text" name="participants" 
-          id="participants" placeholder="Enter list of participants separated by comma" 
+          id="participants" placeholder="Enter list of participants separated by comma" value={task.participants.join(", ")}
           onChange={handleTextInputChange}/>
       </fieldset>
       <fieldset className={addTaskForm.fieldset}>
         <label className={addTaskForm.label} htmlFor="start">Start date:</label>
-        <input className={addTaskForm.inputDate} type="date" name="start" id="start" 
+        <input className={addTaskForm.inputDate} type="date" name="start" id="start" value={task.startDate ? task.startDate.replaceAll(".", "-") : null}
           onChange={handleDateInputChange} required/>
         <br/>
         <label className={addTaskForm.label} htmlFor="finish">Finish date:</label>
-        <input className={addTaskForm.inputDate} type="date" name="finish" id="finish" 
+        <input className={addTaskForm.inputDate} type="date" name="finish" id="finish" value={task.finishDate ? task.finishDate.replaceAll(".", "-") : null}
           onChange={handleDateInputChange} required/>
       </fieldset>
       <button className={addTaskForm.submitBtn} type="submit">Submit</button>
