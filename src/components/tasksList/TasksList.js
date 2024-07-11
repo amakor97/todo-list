@@ -54,18 +54,21 @@ export default function TasksList() {
 
   const location = useLocation();
 
-  const error = contextData.error;
   const dispatch = contextData.dispatch;
-  //const tasks = contextData.tasks;
+  const tasks3 = contextData.tasks;
+  console.log(tasks3);
   const {tasks} = useLoaderData();
   const filterText = contextData.filterText;
+
+  const fTask = contextData.fTask;
+  console.log(fTask);
 
   const taskRefs = useRef([]);
 
 
-  if (error) {
-    return null;
-  }
+  //if (error) {
+    //return null;
+  //}
 
 
   function getMaxTaskId(tasks) {
