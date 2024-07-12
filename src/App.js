@@ -77,7 +77,12 @@ export async function tasksLoaderComplexFromLs() {
 function App() {
   const {error, filterText, tasksData} = useTasks();
   const [sortType, setSortType] = useState(sortOptions[0].value);
-  const [srcTasks, dispatch] = useReducer(handleTasks, tasksData);
+  const [srcTasks, dispatch] = useReducer(handleTasks, JSON.parse(window.localStorage.getItem("tasks")));
+
+
+  console.log(srcTasks);
+
+  //window.localStorage.setItem("tasks", JSON.stringify(tasksData));
 
   const {tasks2, openTasksLen} = useLoaderData();
 
@@ -148,12 +153,14 @@ function App() {
 
   function handleUnload() {
     console.log(srcTasks);
-    window.localStorage.setItem("tasks", JSON.stringify(srcTasks));
+    //window.localStorage.setItem("tasks", JSON.stringify(srcTasks));
   }
 
   useEffect(() => {
     window.addEventListener("beforeunload", handleUnload);
   }, []);
+
+
 
   return (
     <div>
@@ -213,3 +220,20 @@ function App() {
 }
 
 export default App;
+
+
+/*
+
+[
+  {
+    id: 1, 
+    startDate: "2024.05.13", 
+    finishDate: "2024.08.05", 
+    comments: ["important"], 
+    description: "study js react course", 
+    participants: ["myself"],
+    status: "not finished"
+  }
+]
+
+*/

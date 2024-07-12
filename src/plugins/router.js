@@ -8,6 +8,8 @@ import TasksPage from "../pages/TasksPage.js";
 import AddTaskPage, { createAction, idsLoader } from "../pages/AddTaskPage.js";
 import UpdateTaskPage from "../pages/UpdateTaskPage.js";
 import { taskByIdLoader } from "../pages/UpdateTaskPage.js";
+import { updateTask } from "../requests/tasksRequests.js";
+import { updateAction } from "../pages/UpdateTaskPage.js";
 
 const routes = [
   {
@@ -47,7 +49,8 @@ const routes = [
           {
             path: "/:taskId/update",
             element: <UpdateTaskPage/>,
-            loader: taskByIdLoader
+            loader: taskByIdLoader,
+            action: updateAction
           }
         ]
       }

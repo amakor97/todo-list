@@ -57,7 +57,8 @@ export default function TasksList() {
   const dispatch = contextData.dispatch;
   const srcTasks = contextData.srcTasks;
   console.log(srcTasks);
-  const {tasks} = useLoaderData();
+  //const {tasks} = useLoaderData();
+  const tasks = JSON.parse(JSON.stringify(srcTasks));
   const filterText = contextData.filterText;
 
   const fTask = contextData.fTask;

@@ -63,7 +63,10 @@ export function getTasks() {
 
 
 export function getTasksFromLs() {
-  const tasks = JSON.parse(window.localStorage.getItem("tasks"));
+  let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
+  if (!wTasks) {
+    wTasks = tasks;
+  }
   return new Promise(function(resolve, reject) {
     setTimeout(() => resolve(tasks), 1000);
   });
@@ -71,7 +74,10 @@ export function getTasksFromLs() {
 
 
 export function getImportantOpenedTasksFromLs() {
-  const tasks = JSON.parse(window.localStorage.getItem("tasks"));
+  let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
+  if (!wTasks) {
+    wTasks = tasks;
+  }
   const openedImpTasks = tasks.filter(task => task.comments.includes("important") && task.status === "not finished");
   return new Promise(function(resolve, reject) {
     setTimeout(() => resolve(openedImpTasks), 1000);
@@ -161,12 +167,6 @@ export async function publishTask(task) {
   console.log(await task);
 
   let t2 = await task;
-  console.log(t2);
-  let t3 = {};
-  //t2.forEach((v, k) => t3[k] = v);
-  //t3.comments = [];
-  t3.participants = [];
-
 
   tasks.push(t2);
   console.log("new:");
@@ -175,19 +175,25 @@ export async function publishTask(task) {
   return new Promise(function(resolve, reject) {
     resolve(task);
   });
+}
 
-  /*
-  return fetch('https://jsonplaceholder.typicode.com/posts/', {
-      method: 'POST',
-      body: JSON.stringify({
-          title: post.title,
-          body: post.body,
-          userId: 1,
-      }),
-      headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-      },
-  })
-      .then((response) => response.json());
-      */
+
+export async function updateTask(task, id) {
+  console.log(task, id);
+
+  console.log(tasks);
+
+  let ind = tasks.findIndex(task => +task.id === +id);
+
+  tasks[ind] = task;
+
+  console.log(tasks);
+
+
+  window.localStorage.setItem("tasks", JSON.stringify(tasks));
+
+  return new Promise(function(resolve, reject) {
+    resolve(task);
+  });
+
 }
