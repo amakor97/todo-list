@@ -145,3 +145,49 @@ export function getTaskById(id) {
     resolve(task);
   });
 }
+
+
+export function getTasksId() {
+  const ids = tasks.map(task => task.id);
+  console.log({ids});
+  return new Promise(function (resolve, reject) {
+    resolve(ids);
+  });
+}
+
+
+export async function publishTask(task) {
+  console.log(tasks);
+  console.log(await task);
+
+  let t2 = await task;
+  console.log(t2);
+  let t3 = {};
+  //t2.forEach((v, k) => t3[k] = v);
+  //t3.comments = [];
+  t3.participants = [];
+
+
+  tasks.push(t2);
+  console.log("new:");
+  console.log(tasks);
+
+  return new Promise(function(resolve, reject) {
+    resolve(task);
+  });
+
+  /*
+  return fetch('https://jsonplaceholder.typicode.com/posts/', {
+      method: 'POST',
+      body: JSON.stringify({
+          title: post.title,
+          body: post.body,
+          userId: 1,
+      }),
+      headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+      },
+  })
+      .then((response) => response.json());
+      */
+}

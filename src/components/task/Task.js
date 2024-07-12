@@ -10,6 +10,7 @@ export default forwardRef(
     const [isCardOpened, setIsCardOpened] = useState(false);
     const [isAddFormShowed, setAddFormShowed] = useState(false);
 
+    console.log(taskData.comments);
     const commentsStr = taskData.comments.join(", ");
     const participantsStr = taskData.participants.join(", ");
 
