@@ -180,6 +180,7 @@ export async function publishTask(task) {
   tasks.push(t2);
   console.log("new:");
   console.log(tasks);
+  window.localStorage.setItem("tasks", JSON.stringify(tasks));
 
   return new Promise(function(resolve, reject) {
     resolve(task);
@@ -192,14 +193,21 @@ export async function updateTask(task, id) {
 
   console.log(tasks);
 
-  let ind = tasks.findIndex(task => +task.id === +id);
+  let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
+  console.log("wtasks");
+  console.log(wTasks);
+  if (!wTasks) {
+    wTasks = tasks;
+  }
 
-  tasks[ind] = task;
+  let ind = wTasks.findIndex(task => +task.id === +id);
+
+  wTasks[ind] = task;
 
   console.log(tasks);
 
 
-  window.localStorage.setItem("tasks", JSON.stringify(tasks));
+  window.localStorage.setItem("tasks", JSON.stringify(wTasks));
 
   return new Promise(function(resolve, reject) {
     resolve(task);
