@@ -70,7 +70,7 @@ export function getTasksFromLs() {
     wTasks = tasks;
   }
   return new Promise(function(resolve, reject) {
-    setTimeout(() => resolve(wTasks), 3000);
+    setTimeout(() => resolve(wTasks), 1000);
   });
 }
 

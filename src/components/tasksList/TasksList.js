@@ -49,7 +49,6 @@ export async function tasksByTitleLoader({request}) {
 
 export default function TasksList() {
   const [searchText, setSearchText] = useState("");
-  const [isAddTaskFormShowed, setAddTaskFormShowed] = useState(false);
   const contextData = useContext(PageSettings);
   console.log(contextData);
 
@@ -58,32 +57,15 @@ export default function TasksList() {
   const dispatch = contextData.dispatch;
   const srcTasks = contextData.srcTasks;
   const srcTasks2 = contextData.srcTasks2;
+  console.log("compare");
   console.log(srcTasks);
   console.log(srcTasks2);
   //const {tasks} = useLoaderData();
   const tasks = JSON.parse(JSON.stringify(srcTasks));
   const filterText = contextData.filterText;
 
-  const fTask = contextData.fTask;
-  //console.log(fTask);
 
   const taskRefs = useRef([]);
-
-
-  //if (error) {
-    //return null;
-  //}
-
-
-  function getMaxTaskId(tasks) {
-    let maxId = 0;
-    tasks.forEach(task => {
-      if (task.id > maxId) {
-        maxId = task.id;
-      }
-    })
-    return maxId;
-  }
 
 
 
@@ -113,26 +95,6 @@ export default function TasksList() {
     })
   }
 
-  function handleClickAddFormBtn() {
-    setAddTaskFormShowed(true);
-  }
-  
-  function handleAddTask(newTask) {
-    let newId = getMaxTaskId(tasks) + 1;
-    newTask.status = "not finished";
-    newTask.id = newId;
-
-    setAddTaskFormShowed(false);
-    dispatch({
-      type: "addTask",
-      newTask
-    });
-  }
-
-  function handleCancelAddingTask() {
-    setAddTaskFormShowed(false);
-  }
-
 
   function handleScroll(taskId) {
     taskRefs.current = taskRefs.current.filter(task => task);
@@ -144,7 +106,7 @@ export default function TasksList() {
   }
 
  // = tasks;
-  let tasksArr = srcTasks;
+  let tasksArr = srcTasks2;
   tasksArr = tasksArr.filter(task => 
     task.description.toLowerCase().includes(searchText.toLowerCase()));
 

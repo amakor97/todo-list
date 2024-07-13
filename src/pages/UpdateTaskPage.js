@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import AddTaskForm from "../components/addTaskForm/AddTaskForm";
 import { getTaskById, updateTask } from "../requests/tasksRequests";
 import { useContext } from "react";
@@ -43,8 +43,12 @@ export async function updateAction({request, params}) {
   const task = await updateTask(data, params.taskId);
   console.log(task);
 
-  return redirect("/opened");
 
+
+
+  //window.history.pushState({}, undefined, "/update");
+
+  return redirect("/");
 }
 
 
