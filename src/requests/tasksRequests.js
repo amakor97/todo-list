@@ -144,7 +144,14 @@ export function getTasksByTitle(filterText) {
 export function getTaskById(id) {
   console.log(id);
 
-  const task = tasks.find(task => task.id === +id);
+  //const task = tasks.find(task => task.id === +id);
+  
+  //const tasks2 = JSON.parse(window.localStorage.getItem("tasks"));
+  //console.log(tasks2);
+  //tasks2.forEach(task => console.log(task.id));
+
+  const task = JSON.parse(window.localStorage.getItem("tasks")).find(task => task.id === +id);
+
   console.log(task);
 
   return new Promise(function (resolve, reject) {
