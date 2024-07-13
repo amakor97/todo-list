@@ -62,7 +62,7 @@ export default function TasksList() {
   const filterText = contextData.filterText;
 
   const fTask = contextData.fTask;
-  console.log(fTask);
+  //console.log(fTask);
 
   const taskRefs = useRef([]);
 

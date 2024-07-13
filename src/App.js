@@ -58,9 +58,9 @@ export async function tasksLoaderImp() {
 }
 
 export async function tasksLoaderFromLs() {
-  let tasks2 = await getTasksFromLs();
-  let openTasksLen = tasks2.filter(task => task.status === "not finished").length;
-  return {tasks2, openTasksLen};
+  let tasks = await getTasksFromLs();
+  let openTasksLen = tasks.filter(task => task.status === "not finished").length;
+  return {tasks, openTasksLen};
 }
 
 
@@ -68,6 +68,7 @@ export async function tasksLoaderComplexFromLs() {
   let tasks2 = await getTasksFromLs();
   let openedImpTasks = await getImportantOpenedTasksFromLs();
   let openTasksLen = tasks2.filter(task => task.status === "not finished").length;
+  console.log("wtasks in app");
   console.log(tasks2);
   console.log(openedImpTasks);
   return {tasks2, openTasksLen};
@@ -77,14 +78,18 @@ export async function tasksLoaderComplexFromLs() {
 function App() {
   const {error, filterText, tasksData} = useTasks();
   const [sortType, setSortType] = useState(sortOptions[0].value);
-  const [srcTasks, dispatch] = useReducer(handleTasks, JSON.parse(window.localStorage.getItem("tasks")));
-
-
-  console.log(srcTasks);
 
   //window.localStorage.setItem("tasks", JSON.stringify(tasksData));
 
   const {tasks2, openTasksLen} = useLoaderData();
+
+
+
+  const [srcTasks, dispatch] = useReducer(handleTasks, tasks2);
+
+  console.log("src");
+  console.log(srcTasks);
+
 
   function handleTasks(tasks, action) {
     switch(action.type) {
@@ -235,5 +240,13 @@ export default App;
     status: "not finished"
   }
 ]
+
+*/
+
+
+
+/*
+
+[{"id":1,"startDate":"2024.05.13","finishDate":"2024.08.05","comments":["important"],"description":"study js react course","participants":["myself"],"status":"not finished"},{"id":2,"startDate":"2024.04.27","finishDate":"2024.05.13","comments":["not important"],"description":"enjoy vacation","participants":["myself"],"status":"finished"},{"id":3,"startDate":"2024.05.20","finishDate":"2024.05.24","comments":["important"],"description":"do some work tasks","participants":["myself","my colleguaes"],"status":"finished"},{"id":4,"startDate":"2024.05.20","finishDate":"2024.05.20","comments":["important"],"description":"go to see a doctor","participants":["myself"],"status":"not finished"},{"id":5,"startDate":"2024.01.01","finishDate":"2024.12.31","comments":["important"],"description":"improve web dev skills","participants":["myself"],"status":"not finished"},{"participants":["myself"],"id":6,"comments":["long-term"],"startDate":"2024.03.08","finishDate":"2024.09.01","description":"read 'Sapiens' book","status":"not finished"}]
 
 */

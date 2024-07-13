@@ -41,9 +41,9 @@ export async function updateAction({request, params}) {
   console.log(data);
 
   const task = await updateTask(data, params.taskId);
+  console.log(task);
 
-
-  return redirect("/");
+  return redirect("/opened");
 
 }
 

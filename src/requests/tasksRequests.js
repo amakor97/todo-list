@@ -64,11 +64,13 @@ export function getTasks() {
 
 export function getTasksFromLs() {
   let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
+  console.log("wtasks");
+  console.log(wTasks);
   if (!wTasks) {
     wTasks = tasks;
   }
   return new Promise(function(resolve, reject) {
-    setTimeout(() => resolve(tasks), 1000);
+    setTimeout(() => resolve(wTasks), 3000);
   });
 }
 
