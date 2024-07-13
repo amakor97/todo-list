@@ -65,13 +65,13 @@ export async function tasksLoaderFromLs() {
 
 
 export async function tasksLoaderComplexFromLs() {
-  let tasks2 = await getTasksFromLs();
+  let srcTasks = await getTasksFromLs();
   let openedImpTasks = await getImportantOpenedTasksFromLs();
-  let openTasksLen = tasks2.filter(task => task.status === "not finished").length;
+  let openTasksLen = srcTasks.filter(task => task.status === "not finished").length;
   console.log("wtasks in app");
-  console.log(tasks2);
+  console.log(srcTasks);
   console.log(openedImpTasks);
-  return {tasks2, openTasksLen};
+  return {srcTasks, openTasksLen};
 }
 
 
@@ -81,11 +81,11 @@ function App() {
 
   //window.localStorage.setItem("tasks", JSON.stringify(tasksData));
 
-  const {tasks2, openTasksLen} = useLoaderData();
+  const {srcTasks, openTasksLen} = useLoaderData();
 
 
 
-  const [srcTasks, dispatch] = useReducer(handleTasks, tasks2);
+  //const [srcTasks, dispatch] = useReducer(handleTasks, tasks2);
 
   console.log("src");
   console.log(srcTasks);
@@ -175,7 +175,7 @@ function App() {
           <p>Number of tasks: {openTasksLen}</p>
         </div>
         {
-          tasks2.map(task => <SmallTask key={task.id} task={task}/>)
+          srcTasks.map(task => <SmallTask key={task.id} task={task}/>)
         }
         <div>
           <NavLink
@@ -214,7 +214,7 @@ function App() {
           </NavLink>
         </div>
       </aside>
-      <PageSettings.Provider value={{srcTasks, filterText, dispatch}}>
+      <PageSettings.Provider value={{srcTasks, filterText}}>
         {
           error ? null : <Outlet/>
         }
