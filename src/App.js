@@ -76,7 +76,7 @@ export async function tasksLoaderComplexFromLs() {
 
 
 function App() {
-  const {error, filterText, tasksData} = useTasks();
+  const {error, filterText} = useTasks();
   const [sortType, setSortType] = useState(sortOptions[0].value);
 
   //window.localStorage.setItem("tasks", JSON.stringify(tasksData));
@@ -85,10 +85,11 @@ function App() {
 
 
 
-  //const [srcTasks, dispatch] = useReducer(handleTasks, tasks2);
+  const [srcTasks2, dispatch] = useReducer(handleTasks, srcTasks);
 
   console.log("src");
   console.log(srcTasks);
+  console.log(srcTasks2);
 
 
   function handleTasks(tasks, action) {
@@ -214,7 +215,7 @@ function App() {
           </NavLink>
         </div>
       </aside>
-      <PageSettings.Provider value={{srcTasks, filterText}}>
+      <PageSettings.Provider value={{srcTasks, srcTasks2, filterText, dispatch}}>
         {
           error ? null : <Outlet/>
         }

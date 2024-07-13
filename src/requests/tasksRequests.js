@@ -163,7 +163,15 @@ export function getTaskById(id) {
 
 
 export function getTasksId() {
-  const ids = tasks.map(task => task.id);
+  let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
+  console.log("wtasks");
+  console.log(wTasks);
+  if (!wTasks) {
+    wTasks = tasks;
+  }
+
+
+  const ids = wTasks.map(task => task.id);
   console.log({ids});
   return new Promise(function (resolve, reject) {
     resolve(ids);
@@ -175,12 +183,21 @@ export async function publishTask(task) {
   console.log(tasks);
   console.log(await task);
 
+
+  let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
+  console.log("wtasks");
+  console.log(wTasks);
+  if (!wTasks) {
+    wTasks = tasks;
+  }
+
+
   let t2 = await task;
 
-  tasks.push(t2);
+  wTasks.push(t2);
   console.log("new:");
-  console.log(tasks);
-  window.localStorage.setItem("tasks", JSON.stringify(tasks));
+  console.log(wTasks);
+  window.localStorage.setItem("tasks", JSON.stringify(wTasks));
 
   return new Promise(function(resolve, reject) {
     resolve(task);

@@ -51,12 +51,15 @@ export default function TasksList() {
   const [searchText, setSearchText] = useState("");
   const [isAddTaskFormShowed, setAddTaskFormShowed] = useState(false);
   const contextData = useContext(PageSettings);
+  console.log(contextData);
 
   const location = useLocation();
 
   const dispatch = contextData.dispatch;
   const srcTasks = contextData.srcTasks;
+  const srcTasks2 = contextData.srcTasks2;
   console.log(srcTasks);
+  console.log(srcTasks2);
   //const {tasks} = useLoaderData();
   const tasks = JSON.parse(JSON.stringify(srcTasks));
   const filterText = contextData.filterText;
@@ -140,8 +143,8 @@ export default function TasksList() {
     });
   }
 
-
-  let tasksArr = tasks;
+ // = tasks;
+  let tasksArr = srcTasks;
   tasksArr = tasksArr.filter(task => 
     task.description.toLowerCase().includes(searchText.toLowerCase()));
 
