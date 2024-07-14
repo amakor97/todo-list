@@ -32,9 +32,6 @@ export async function tasksLoaderComplexFromLs() {
   let srcTasks = await getTasksFromLs();
   let openedImpTasks = await getImportantOpenedTasksFromLs();
   let openTasksLen = srcTasks.filter(task => task.status === "not finished").length;
-  console.log("wtasks in app");
-  console.log(srcTasks);
-  console.log(openedImpTasks);
   return {srcTasks, openTasksLen};
 }
 
@@ -51,8 +48,6 @@ function App() {
  // при изменениях srcTasks не меняет 2
 
 
-  console.log("src");
-  console.log(srcTasks);
 
 
 

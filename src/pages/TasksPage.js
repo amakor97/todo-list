@@ -76,11 +76,9 @@ export async function tasksByTitleLoader({request}) {
 
 
 function sortTasks(defTasksArr, tasksArr, sortType) {
-  console.log(tasksArr);
   if (tasksArr.tasks) {
     tasksArr = tasksArr.tasks;
   }
-  console.log(sortType);
 
   switch(sortType) {
     case "start":
@@ -103,24 +101,16 @@ export default function TasksPage() {
   const contextData = useContext(PageSettings);
 
   let location = useLocation();
-  console.log(location);
   const tmpTasks = useLoaderData();
-  console.log("tasks from loader:");
-  console.log(tmpTasks);
 
   const srcTasks = (location.pathname === "/") ? contextData.srcTasks : JSON.parse(JSON.stringify(tmpTasks));
-  console.log("tasks before rendering:");
-  console.log(srcTasks);
   //const srcTasks2 = contextData.srcTasks;
 
   //const [srcTasks2, dispatch] = useReducer(handleTasks, contextData.srcTasks);
   //const [srcTasks2, dispatch] = useReducer(handleTasks, srcTasks);
 
   let srcTasks2 = JSON.parse(JSON.stringify(srcTasks));
-  console.log({sortType});
-
   srcTasks2 = sortTasks(tmpTasks, srcTasks2, sortType);
-  console.log(srcTasks2);
 
   function handleTasks(tasks, action) {
     switch(action.type) {

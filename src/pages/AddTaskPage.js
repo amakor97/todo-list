@@ -44,8 +44,6 @@ export async function createAction({request}){
   console.log(ids);
   data.id = getMaxId(ids) + 1;
 
-
-
   await publishTask(data);
   return redirect("/");
 }

@@ -64,8 +64,6 @@ export function getTasks() {
 
 export function getTasksFromLs() {
   let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
-  console.log("wtasks all:");
-  console.log(wTasks);
   if (!wTasks) {
     wTasks = tasks;
   }
@@ -77,8 +75,6 @@ export function getTasksFromLs() {
 
 export function getImportantOpenedTasksFromLs() {
   let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
-  console.log("wtasks opened:");
-  console.log(wTasks);
   if (!wTasks) {
     wTasks = tasks;
   }
@@ -91,8 +87,7 @@ export function getImportantOpenedTasksFromLs() {
 
 export function getTasksByCategory(category) {
   let tasksByCategory = [];
-  console.log("wtasks cat:");
-  
+
   let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
   if (!wTasks) {
     wTasks = tasks;
@@ -110,7 +105,6 @@ export function getTasksByCategory(category) {
     }
   }
 
-  console.log(tasksByCategory);
 
   return new Promise(function(resolve, reject) {
     setTimeout(() => resolve(tasksByCategory), 1000);
@@ -142,8 +136,6 @@ export function getTasksByTimeStatus(timeStatus) {
 
 export function getTasksByTitle(filterText) {
   let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
-  console.log("wtasks");
-  console.log(wTasks);
   if (!wTasks) {
     wTasks = tasks;
   }
@@ -277,8 +269,27 @@ export async function updateTask(task, id) {
       resolve(task);
     });
   }
+}
 
 
+export async function completeTask(id) {
+  console.log(id);
 
+  let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
+  console.log("wtasks");
+  console.log(wTasks);
+  if (!wTasks) {
+    wTasks = tasks;
+  }
 
+  let ind = wTasks.findIndex(task => +task.id === +id);
+
+  console.log(wTasks[ind]);
+
+  wTasks[ind].status = "finished";
+  window.localStorage.setItem("tasks", JSON.stringify(wTasks));
+
+  return new Promise(function(resolve, reject) {
+    resolve(wTasks);
+  });
 }

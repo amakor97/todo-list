@@ -10,22 +10,26 @@ import UpdateTaskPage from "../pages/UpdateTaskPage.js";
 import { taskByIdLoader } from "../pages/UpdateTaskPage.js";
 import { updateTask } from "../requests/tasksRequests.js";
 import { updateAction } from "../pages/UpdateTaskPage.js";
+import { completeTaskByIdAction } from "../components/tasksList/TasksList.js";
 
 const routes = [
   {
     path: "/",
     element: <App/>,
     loader: tasksLoaderComplexFromLs,
+    action: completeTaskByIdAction,
     children: [
       {
         index: true,
         element: <TasksPage/>,
         loader: tasksByTitleLoader,
+        action: completeTaskByIdAction
       },
       {
         path: "/opened",
         element: <TasksPage/>,
         loader: tasksByCategoryLoader,
+        action: completeTaskByIdAction
       },
       {
         path: "/opened/:status",
@@ -36,6 +40,7 @@ const routes = [
         path: "/closed",
         element: <TasksPage/>,
         loader: tasksByCategoryLoader,
+        action: completeTaskByIdAction
       },
       {
         path: "/add",

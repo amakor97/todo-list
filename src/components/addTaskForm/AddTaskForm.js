@@ -127,7 +127,6 @@ export default function AddTaskForm({onAddTask, onCancelAddingTask}) {
       description: "",
       comments: [],
       participants: [],
-
     }
   }
 

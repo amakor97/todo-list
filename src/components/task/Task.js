@@ -5,6 +5,8 @@ import { useState, forwardRef } from "react";
 import AddParticipantsForm from "../addParticipantsForm/AddParticipantsForm.js";
 import { NavLink } from "react-router-dom";
 
+import { Form } from "react-router-dom";
+
 export default forwardRef(
     function Task({taskData, onAddParticipant, onTaskComplete, id}, ref) {
     const [isCardOpened, setIsCardOpened] = useState(false);
@@ -70,11 +72,9 @@ export default forwardRef(
             <div className={task.footer}>
               <p>started: {taskData.startDate}</p>
               <NavLink className={task.completeBtn} to={"/" + taskData.id + "/update"}>Update</NavLink>
-              <button 
-                className={task.completeBtn} 
-                onClick={handleCompleteBtnClick}>
-                  Complete
-              </button>
+              <Form method="PUT">
+                <button className={task.completeBtn} type="submit" name="complete" value={taskData.id}>Complete</button>
+              </Form>
             </div>
           </>
         }

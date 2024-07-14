@@ -19,8 +19,6 @@ export async function updateAction({request, params}) {
   console.log("upd:");
   console.log(data);
 
-  //console.log()
-
   data.id = +params.taskId;
 
   data.comments = [data.comments1, data.comments2].filter(value => value);
@@ -39,17 +37,7 @@ export async function updateAction({request, params}) {
   data.status = defData.status;
 
   data.participants = data.participants.split(", ");
-
-  console.log(data);
-
   const task = await updateTask(data, params.taskId);
-  console.log(task);
-
-
-
-
-  //window.history.pushState({}, undefined, "/update");
-
   return redirect("/");
 }
 
