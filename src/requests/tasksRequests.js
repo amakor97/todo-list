@@ -226,26 +226,59 @@ export async function publishTask(task) {
 export async function updateTask(task, id) {
   console.log(task, id);
 
-  console.log(tasks);
+  console.log(task.intent);
 
-  let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
-  console.log("wtasks");
-  console.log(wTasks);
-  if (!wTasks) {
-    wTasks = tasks;
+  if (tasks.intent === "submit") {
+    delete tasks.intent;
+
+
+    console.log(tasks);
+
+    let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
+    console.log("wtasks");
+    console.log(wTasks);
+    if (!wTasks) {
+      wTasks = tasks;
+    }
+  
+    let ind = wTasks.findIndex(task => +task.id === +id);
+  
+    wTasks[ind] = task;
+  
+    console.log(tasks);
+  
+  
+    window.localStorage.setItem("tasks", JSON.stringify(wTasks));
+  
+    return new Promise(function(resolve, reject) {
+      resolve(task);
+    });
+
+  } else {
+    delete tasks.intent;
+
+
+    console.log(tasks);
+
+    let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
+    console.log("wtasks");
+    console.log(wTasks);
+    if (!wTasks) {
+      wTasks = tasks;
+    }
+
+    let ind = wTasks.findIndex(task => +task.id === +id);
+
+    wTasks.splice(ind, 1);
+
+    window.localStorage.setItem("tasks", JSON.stringify(wTasks));
+  
+    return new Promise(function(resolve, reject) {
+      resolve(task);
+    });
   }
 
-  let ind = wTasks.findIndex(task => +task.id === +id);
-
-  wTasks[ind] = task;
-
-  console.log(tasks);
 
 
-  window.localStorage.setItem("tasks", JSON.stringify(wTasks));
-
-  return new Promise(function(resolve, reject) {
-    resolve(task);
-  });
 
 }

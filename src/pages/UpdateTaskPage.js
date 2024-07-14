@@ -19,6 +19,8 @@ export async function updateAction({request, params}) {
   console.log("upd:");
   console.log(data);
 
+  //console.log()
+
   data.id = +params.taskId;
 
   data.comments = [data.comments1, data.comments2].filter(value => value);

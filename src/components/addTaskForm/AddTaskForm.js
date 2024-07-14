@@ -165,8 +165,9 @@ export default function AddTaskForm({onAddTask, onCancelAddingTask}) {
         <input className={addTaskForm.inputDate} type="date" name="finish" id="finish" defaultValue={task.finishDate ? task.finishDate.replaceAll(".", "-") : undefined}
           required/>
       </fieldset>
-      <button className={addTaskForm.submitBtn} type="submit">Submit</button>
+      <button className={addTaskForm.submitBtn} type="submit" name="intent" value="submit">Submit</button>
       <button className={addTaskForm.submitBtn} type="reset">Reset</button>
+      <button className={addTaskForm.submitBtn} type="submit" name="intent" value="delete">Delete</button>
     </Form>
   );
 }
