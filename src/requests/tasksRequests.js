@@ -64,7 +64,7 @@ export function getTasks() {
 
 export function getTasksFromLs() {
   let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
-  console.log("wtasks");
+  console.log("wtasks all:");
   console.log(wTasks);
   if (!wTasks) {
     wTasks = tasks;
@@ -77,6 +77,8 @@ export function getTasksFromLs() {
 
 export function getImportantOpenedTasksFromLs() {
   let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
+  console.log("wtasks opened:");
+  console.log(wTasks);
   if (!wTasks) {
     wTasks = tasks;
   }
@@ -89,6 +91,9 @@ export function getImportantOpenedTasksFromLs() {
 
 export function getTasksByCategory(category) {
   let tasksByCategory = [];
+  console.log("wtasks cat:");
+  
+
 
   switch(category) {
     case "/opened": {

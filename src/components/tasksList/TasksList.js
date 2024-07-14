@@ -56,7 +56,7 @@ export default function TasksList() {
 
   const dispatch = contextData.dispatch;
   const srcTasks = contextData.srcTasks;
-  const srcTasks2 = contextData.srcTasks2;
+  const srcTasks2 = (contextData.srcTasks2.tasks) ? contextData.srcTasks2.tasks : contextData.srcTasks2;
   console.log("compare");
   console.log(srcTasks);
   console.log(srcTasks2);
@@ -64,7 +64,7 @@ export default function TasksList() {
   const tasks = JSON.parse(JSON.stringify(srcTasks));
   const filterText = contextData.filterText;
 
-
+//
   const taskRefs = useRef([]);
 
 
@@ -107,6 +107,7 @@ export default function TasksList() {
 
  // = tasks;
   let tasksArr = srcTasks2;
+  console.log(tasksArr);
   tasksArr = tasksArr.filter(task => 
     task.description.toLowerCase().includes(searchText.toLowerCase()));
 

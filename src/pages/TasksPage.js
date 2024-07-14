@@ -3,7 +3,7 @@ import TasksList from "../components/tasksList/TasksList";
 
 import { useContext } from "react";
 import { PageSettings } from "../pageSettings";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useLocation } from "react-router-dom";
 
 import { useReducer, useState } from "react";
 
@@ -78,10 +78,17 @@ export default function TasksPage() {
   const [sortType, setSortType] = useState(sortOptions[0].value);
   const contextData = useContext(PageSettings);
 
-  const srcTasks = contextData.srcTasks;
+  let location = useLocation();
+  console.log(location);
+  const tmpTasks = useLoaderData();
+  console.log(tmpTasks);
+
+  const srcTasks = (location.pathname === "/") ? contextData.srcTasks : JSON.parse(JSON.stringify(tmpTasks));
+  console.log(srcTasks);
   //const srcTasks2 = contextData.srcTasks;
 
-  const [srcTasks2, dispatch] = useReducer(handleTasks, contextData.srcTasks);
+  //const [srcTasks2, dispatch] = useReducer(handleTasks, contextData.srcTasks);
+  const [srcTasks2, dispatch] = useReducer(handleTasks, srcTasks);
 
   function handleTasks(tasks, action) {
     switch(action.type) {
@@ -152,12 +159,8 @@ export default function TasksPage() {
   //const dispatch = contextData.dispatch;
   const filterText = "";
   const fTask = srcTasks[0];
-  console.log(fTask);
-
-  console.log(contextData);
 
   //const {tasks} = useLoaderData();
-  console.log(srcTasks);
 
   return (
     <PageSettings.Provider value={{srcTasks, srcTasks2, fTask, filterText, dispatch}}>
