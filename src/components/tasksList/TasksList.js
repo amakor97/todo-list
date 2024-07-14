@@ -4,13 +4,13 @@ import TaskLink from "../taskLink/TaskLink.js";
 import Task from "../task/Task.js";
 import SortSelect from "../sortSelect/SortSelect.js";
 import Search from "../search/Search.js";
-import AddTaskForm from "../addTaskForm/AddTaskForm.js";
 
 import { completeTask, getTasks, getTasksByCategory, getTasksByTimeStatus, getTasksByTitle } from "../../requests/tasksRequests.js";
 
-import { useState, useContext, useRef } from "react";
+import { useContext, useRef } from "react";
 import { PageSettings } from "../../pageSettings.js";
-import { useLoaderData, Form, useSubmit, useLocation, redirect } from "react-router-dom";
+import { useLocation, redirect } from "react-router-dom";
+
 
 const sortOptions = [
   {id: 1, name: "Select sort", value: "none"},
@@ -19,19 +19,19 @@ const sortOptions = [
   {id: 4, name: "P-ants number", value: "number"}
 ];
 
+
 export async function tasksLoader() {
   const tasks = await getTasks();
   return {tasks};
 }
 
 
-
 export async function tasksByCategoryLoader({request}) {
   const url = new URL(request.url);
-  let tasks = await getTasksByCategory(url.pathname);
-
+  const tasks = await getTasksByCategory(url.pathname);
   return {tasks};
 }
+
 
 export async function tasksByStatusLoader({params}) {
   const tasks = await getTasksByTimeStatus(params.status);
@@ -47,66 +47,24 @@ export async function tasksByTitleLoader({request}) {
 }
 
 
-export async function completeTaskByIdAction({request, params}) {
-  console.log("COMPLETE");
-  console.log(request, params);
-
+export async function completeTaskByIdAction({request}) {
   const data = Object.fromEntries(await request.formData());
-  console.log(data);
-
   await completeTask(data.complete);
-
-  const task = await getTasks();
   return redirect("/");
 }
 
 
 export default function TasksList() {
-  const [searchText, setSearchText] = useState("");
   const contextData = useContext(PageSettings);
-
   const location = useLocation();
-
-  const dispatch = contextData.dispatch;
-  const srcTasks = contextData.srcTasks;
   const srcTasks2 = (contextData.srcTasks2.tasks) ? contextData.srcTasks2.tasks : contextData.srcTasks2;
-  //const {tasks} = useLoaderData();
-  const tasks = JSON.parse(JSON.stringify(srcTasks));
   const filterText = contextData.filterText;
-
   const setSortType = contextData.setSortType;
-//
   const taskRefs = useRef([]);
 
 
-
-  function handleAddParticipant(newParticipant, taskId) {
-    dispatch({
-      type:"addParticipant",
-      task: {
-        name: newParticipant,
-        id: taskId,
-      }
-    })
-  }
-
-
   function handleSortSelect(sortType) {
-    /*dispatch({
-      type: "sort",
-      sortType
-    })*/
-
-      console.log(sortType);
     setSortType(sortType);
-  }
-
-
-  function handleTaskComplete(taskId) {
-    dispatch({
-      type: "complete",
-      taskId
-    })
   }
 
 
@@ -119,11 +77,7 @@ export default function TasksList() {
     });
   }
 
- // = tasks;
   let tasksArr = srcTasks2;
-  tasksArr = tasksArr.filter(task => 
-    task.description.toLowerCase().includes(searchText.toLowerCase()));
-
 
 
   return (
@@ -138,7 +92,7 @@ export default function TasksList() {
         <div className={tasksList.linksCont}>
           {
             tasksArr.map(task => 
-            <TaskLink taskId={task.id} onLinkClick={handleScroll} key={task.id}/>)
+              <TaskLink taskId={task.id} onLinkClick={handleScroll} key={task.id}/>)
           }
         </div> :
         null

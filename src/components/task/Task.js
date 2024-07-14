@@ -1,17 +1,25 @@
 import task from "./task.module.css";
 
 import { useState, forwardRef } from "react";
-import { Form, NavLink } from "react-router-dom";
+import { Form, useSubmit, NavLink } from "react-router-dom";
 
 export default forwardRef(
-    function Task({taskData, id}, ref) {
+  function Task({taskData, id}, ref) {
     const [isCardOpened, setIsCardOpened] = useState(false);
 
     const commentsStr = taskData.comments.join(", ");
     const participantsStr = taskData.participants.join(", ");
     
+    let submit = useSubmit();
+
     function handleClickEvent() {
       setIsCardOpened(!isCardOpened);
+      
+    }
+
+    function handleCompleteTask(e) {
+      setIsCardOpened(false);
+      submit(e.currentTarget);
     }
 
 
@@ -33,7 +41,8 @@ export default forwardRef(
               <p>started: {taskData.startDate}</p>
               <NavLink className={task.completeBtn} to={"/" + taskData.id + "/update"}>Update</NavLink>
               <Form method="PUT">
-                <button className={task.completeBtn} type="submit" name="complete" value={taskData.id}>Complete</button>
+                <button className={task.completeBtn} type="submit" name="complete" value={taskData.id} 
+                  onClick={handleCompleteTask}>Complete</button>
               </Form>
             </div>
           </>
