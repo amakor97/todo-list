@@ -124,6 +124,7 @@ export default function AddTaskForm({onAddTask, onCancelAddingTask}) {
 
   if (!task) {
     task = {
+      id: undefined,
       description: "",
       comments: [],
       participants: [],

@@ -182,7 +182,6 @@ export function getTasksId() {
 
 
   const ids = wTasks.map(task => task.id);
-  console.log({ids});
   return new Promise(function (resolve, reject) {
     resolve(ids);
   });
@@ -193,6 +192,7 @@ export async function publishTask(task) {
   console.log(tasks);
   console.log(await task);
 
+  delete task.intent;
 
   let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
   console.log("wtasks");
@@ -220,8 +220,8 @@ export async function updateTask(task, id) {
 
   console.log(task.intent);
 
-  if (tasks.intent === "submit") {
-    delete tasks.intent;
+  if (task.intent === "submit") {
+    delete task.intent;
 
 
     console.log(tasks);
