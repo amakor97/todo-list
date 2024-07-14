@@ -64,6 +64,7 @@ export default function TasksList() {
   const tasks = JSON.parse(JSON.stringify(srcTasks));
   const filterText = contextData.filterText;
 
+  const setSortType = contextData.setSortType;
 //
   const taskRefs = useRef([]);
 
@@ -81,10 +82,13 @@ export default function TasksList() {
 
 
   function handleSortSelect(sortType) {
-    dispatch({
+    /*dispatch({
       type: "sort",
       sortType
-    })
+    })*/
+
+      console.log(sortType);
+    setSortType(sortType);
   }
 
 

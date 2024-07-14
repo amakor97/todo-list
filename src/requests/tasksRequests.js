@@ -93,18 +93,24 @@ export function getTasksByCategory(category) {
   let tasksByCategory = [];
   console.log("wtasks cat:");
   
+  let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
+  if (!wTasks) {
+    wTasks = tasks;
+  }
 
 
   switch(category) {
     case "/opened": {
-      tasksByCategory = tasks.filter(task => task.status === "not finished");
+      tasksByCategory = wTasks.filter(task => task.status === "not finished");
       break;
     }
     case "/closed": {
-      tasksByCategory = tasks.filter(task => task.status === "finished");
+      tasksByCategory = wTasks.filter(task => task.status === "finished");
       break;
     }
   }
+
+  console.log(tasksByCategory);
 
   return new Promise(function(resolve, reject) {
     setTimeout(() => resolve(tasksByCategory), 1000);
@@ -135,11 +141,18 @@ export function getTasksByTimeStatus(timeStatus) {
 
 
 export function getTasksByTitle(filterText) {
+  let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
+  console.log("wtasks");
+  console.log(wTasks);
+  if (!wTasks) {
+    wTasks = tasks;
+  }
+
   if (!filterText) return new Promise(function (resolve, reject) {
-    resolve(tasks);
+    resolve(wTasks);
   });
 
-  const tasksByTitle = tasks.filter(task => 
+  const tasksByTitle = wTasks.filter(task => 
     task.description.toLowerCase().includes(filterText.toLowerCase()));
 
   return new Promise(function (resolve, reject) {

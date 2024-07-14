@@ -56,6 +56,8 @@ export async function tasksByCategoryLoader({request}) {
   const url = new URL(request.url);
   let tasks = await getTasksByCategory(url.pathname);
 
+  
+
   return {tasks};
 }
 
@@ -73,6 +75,28 @@ export async function tasksByTitleLoader({request}) {
 }
 
 
+function sortTasks(defTasksArr, tasksArr, sortType) {
+  console.log(tasksArr);
+  if (tasksArr.tasks) {
+    tasksArr = tasksArr.tasks;
+  }
+  console.log(sortType);
+
+  switch(sortType) {
+    case "start":
+    case "finish": {
+      return tasksArr.sort((taskA, taskB) => sortTasksByDate(sortType, taskA, taskB));
+    }
+    case "number": {
+      return tasksArr.sort((taskA, taskB) => sortByParticipantsNumber(taskA, taskB));
+    }
+    default: return defTasksArr;
+  }
+
+  return tasksArr;
+}
+
+
 export default function TasksPage() {
   
   const [sortType, setSortType] = useState(sortOptions[0].value);
@@ -81,14 +105,22 @@ export default function TasksPage() {
   let location = useLocation();
   console.log(location);
   const tmpTasks = useLoaderData();
+  console.log("tasks from loader:");
   console.log(tmpTasks);
 
   const srcTasks = (location.pathname === "/") ? contextData.srcTasks : JSON.parse(JSON.stringify(tmpTasks));
+  console.log("tasks before rendering:");
   console.log(srcTasks);
   //const srcTasks2 = contextData.srcTasks;
 
   //const [srcTasks2, dispatch] = useReducer(handleTasks, contextData.srcTasks);
-  const [srcTasks2, dispatch] = useReducer(handleTasks, srcTasks);
+  //const [srcTasks2, dispatch] = useReducer(handleTasks, srcTasks);
+
+  let srcTasks2 = JSON.parse(JSON.stringify(srcTasks));
+  console.log({sortType});
+
+  srcTasks2 = sortTasks(tmpTasks, srcTasks2, sortType);
+  console.log(srcTasks2);
 
   function handleTasks(tasks, action) {
     switch(action.type) {
@@ -104,7 +136,8 @@ export default function TasksPage() {
           }
         })
       }
-
+      
+      /*
       case "addParticipant": {
         const tasksCopy = JSON.parse(JSON.stringify(tasks));
 
@@ -128,6 +161,7 @@ export default function TasksPage() {
 
         return tasksCopy;
       }
+      */
       
       case "sort": {
         const tasksCopy = JSON.parse(JSON.stringify(tasks));
@@ -145,25 +179,22 @@ export default function TasksPage() {
         }
       }
 
+      /*
       case "addTask": {
         const tasksCopy = JSON.parse(JSON.stringify(tasks));
         tasksCopy.push(action.newTask);
         return tasksCopy;
       }
-
-      default: return tasks;
+      */
+      
+      default: return srcTasks;
     }
   }
 
-
-  //const dispatch = contextData.dispatch;
   const filterText = "";
-  const fTask = srcTasks[0];
-
-  //const {tasks} = useLoaderData();
 
   return (
-    <PageSettings.Provider value={{srcTasks, srcTasks2, fTask, filterText, dispatch}}>
+    <PageSettings.Provider value={{srcTasks, srcTasks2, filterText, setSortType}}>
       <TasksList/>
     </PageSettings.Provider>
   )
