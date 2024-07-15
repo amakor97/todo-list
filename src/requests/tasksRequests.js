@@ -55,32 +55,24 @@ const tasks = [
   }
 ]
 
-export function getTasks() {
-  return new Promise(function(resolve, reject) {
-      setTimeout(() => resolve(tasks), 1000);
-  });
+
+function getTasks(arr) {
+  arr = JSON.parse(window.localStorage.getItem("tasks"));
+  if (!arr) {
+    arr = tasks;
+  }
+  return arr;
 }
 
 
 export function getTasksFromLs() {
-  let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
-  if (!wTasks) {
-    wTasks = tasks;
+  let tmpTasks = JSON.parse(window.localStorage.getItem("tasks"));
+  if (!tmpTasks) {
+    tmpTasks = tasks;
   }
-  return new Promise(function(resolve, reject) {
-    setTimeout(() => resolve(wTasks), 1000);
-  });
-}
 
-
-export function getImportantOpenedTasksFromLs() {
-  let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
-  if (!wTasks) {
-    wTasks = tasks;
-  }
-  const openedImpTasks = tasks.filter(task => task.comments.includes("important") && task.status === "not finished");
   return new Promise(function(resolve, reject) {
-    setTimeout(() => resolve(openedImpTasks), 1000);
+    setTimeout(() => resolve(tmpTasks), 1000);
   });
 }
 
@@ -88,45 +80,42 @@ export function getImportantOpenedTasksFromLs() {
 export function getTasksByCategory(category) {
   let tasksByCategory = [];
 
-  console.log("cat req");
-
-  let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
-  if (!wTasks) {
-    wTasks = tasks;
+  let tmpTasks = JSON.parse(window.localStorage.getItem("tasks"));
+  if (!tmpTasks) {
+    tmpTasks = tasks;
   }
-
 
   switch(category) {
     case "/opened": {
-      tasksByCategory = wTasks.filter(task => task.status === "not finished");
+      tasksByCategory = tmpTasks.filter(task => task.status === "not finished");
       break;
     }
     case "/closed": {
-      tasksByCategory = wTasks.filter(task => task.status === "finished");
+      tasksByCategory = tmpTasks.filter(task => task.status === "finished");
       break;
     }
   }
-
-  console.log(tasksByCategory);
 
   return new Promise(function(resolve, reject) {
     setTimeout(() => resolve(tasksByCategory), 1000);
   })
 }
 
+
 export function getTasksByTimeStatus(timeStatus) {
   let tasksByTimeStatus = [];
   let date = new Date();
   date = date.toISOString().slice(0, 10).replaceAll("-", ".");
 
-
   switch (timeStatus) {
     case "running": {
-      tasksByTimeStatus = tasks.filter(task => (task.status === "not finished" && task.finishDate >= date));
+      tasksByTimeStatus = tasks.filter(
+        task => (task.status === "not finished" && task.finishDate >= date));
       break;
     }
     case "expired": {
-      tasksByTimeStatus = tasks.filter(task => (task.status === "not finished" && task.finishDate < date));
+      tasksByTimeStatus = tasks.filter(
+        task => (task.status === "not finished" && task.finishDate < date));
       break;
     }
   }
@@ -138,17 +127,17 @@ export function getTasksByTimeStatus(timeStatus) {
 
 
 export function getTasksByTitle(filterText) {
-  let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
-  if (!wTasks) {
-    wTasks = tasks;
+  let tmpTasks = JSON.parse(window.localStorage.getItem("tasks"));
+  if (!tmpTasks) {
+    tmpTasks = tasks;
   }
 
   if (!filterText) return new Promise(function (resolve, reject) {
-    resolve(wTasks);
+    resolve(tmpTasks);
   });
 
-  const tasksByTitle = wTasks.filter(task => 
-    task.description.toLowerCase().includes(filterText.toLowerCase()));
+  const tasksByTitle = tmpTasks.filter(
+    task => task.description.toLowerCase().includes(filterText.toLowerCase()));
 
   return new Promise(function (resolve, reject) {
     resolve(tasksByTitle);
@@ -157,17 +146,8 @@ export function getTasksByTitle(filterText) {
 
 
 export function getTaskById(id) {
-  console.log(id);
-
-  //const task = tasks.find(task => task.id === +id);
-  
-  //const tasks2 = JSON.parse(window.localStorage.getItem("tasks"));
-  //console.log(tasks2);
-  //tasks2.forEach(task => console.log(task.id));
-
-  const task = JSON.parse(window.localStorage.getItem("tasks")).find(task => task.id === +id);
-
-  console.log(task);
+  const task = JSON.parse(window.localStorage.getItem("tasks")).find(
+    task => task.id === +id);
 
   return new Promise(function (resolve, reject) {
     resolve(task);
@@ -176,15 +156,12 @@ export function getTaskById(id) {
 
 
 export function getTasksId() {
-  let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
-  console.log("wtasks");
-  console.log(wTasks);
-  if (!wTasks) {
-    wTasks = tasks;
+  let tmpTasks = JSON.parse(window.localStorage.getItem("tasks"));
+  if (!tmpTasks) {
+    tmpTasks = tasks;
   }
 
-
-  const ids = wTasks.map(task => task.id);
+  const ids = tmpTasks.map(task => task.id);
   return new Promise(function (resolve, reject) {
     resolve(ids);
   });
@@ -192,25 +169,15 @@ export function getTasksId() {
 
 
 export async function publishTask(task) {
-  console.log(tasks);
-  console.log(await task);
-
   delete task.intent;
 
-  let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
-  console.log("wtasks");
-  console.log(wTasks);
-  if (!wTasks) {
-    wTasks = tasks;
+  let tmpTasks = JSON.parse(window.localStorage.getItem("tasks"));
+  if (!tmpTasks) {
+    tmpTasks = tasks;
   }
 
-
-  let t2 = await task;
-
-  wTasks.push(t2);
-  console.log("new:");
-  console.log(wTasks);
-  window.localStorage.setItem("tasks", JSON.stringify(wTasks));
+  tmpTasks.push(await task);
+  window.localStorage.setItem("tasks", JSON.stringify(tmpTasks));
 
   return new Promise(function(resolve, reject) {
     resolve(task);
@@ -219,80 +186,41 @@ export async function publishTask(task) {
 
 
 export async function updateTask(task, id) {
-  console.log(task, id);
+  delete tasks.intent;
 
-  console.log(task.intent);
+  let tmpTasks = JSON.parse(window.localStorage.getItem("tasks"));
+  if (!tmpTasks) {
+    tmpTasks = tasks;
+  }
+
+  let ind = tmpTasks.findIndex(task => +task.id === +id);
 
   if (task.intent === "submit") {
-    delete task.intent;
-
-
-    console.log(tasks);
-
-    let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
-    console.log("wtasks");
-    console.log(wTasks);
-    if (!wTasks) {
-      wTasks = tasks;
-    }
-  
-    let ind = wTasks.findIndex(task => +task.id === +id);
-  
-    wTasks[ind] = task;
-  
-    console.log(tasks);
-  
-  
-    window.localStorage.setItem("tasks", JSON.stringify(wTasks));
-  
-    return new Promise(function(resolve, reject) {
-      resolve(task);
-    });
-
+    tmpTasks[ind] = task;
   } else {
-    delete tasks.intent;
-
-
-    console.log(tasks);
-
-    let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
-    console.log("wtasks");
-    console.log(wTasks);
-    if (!wTasks) {
-      wTasks = tasks;
-    }
-
-    let ind = wTasks.findIndex(task => +task.id === +id);
-
-    wTasks.splice(ind, 1);
-
-    window.localStorage.setItem("tasks", JSON.stringify(wTasks));
-  
-    return new Promise(function(resolve, reject) {
-      resolve(task);
-    });
+    tmpTasks.splice(ind, 1);
   }
+
+  window.localStorage.setItem("tasks", JSON.stringify(tmpTasks));
+  
+  return new Promise(function(resolve, reject) {
+    resolve(task);
+  });
 }
 
 
 export async function completeTask(id) {
-  console.log(id);
-
-  let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
-  console.log("wtasks");
-  console.log(wTasks);
-  if (!wTasks) {
-    wTasks = tasks;
+  let tmpTasks = JSON.parse(window.localStorage.getItem("tasks"));
+  if (!tmpTasks) {
+    tmpTasks = tasks;
   }
 
-  let ind = wTasks.findIndex(task => +task.id === +id);
+  let ind = tmpTasks.findIndex(task => +task.id === +id);
 
-  console.log(wTasks[ind]);
-
-  wTasks[ind].status = "finished";
-  window.localStorage.setItem("tasks", JSON.stringify(wTasks));
+  tmpTasks[ind].status = "finished";
+  window.localStorage.setItem("tasks", JSON.stringify(tmpTasks));
 
   return new Promise(function(resolve, reject) {
-    resolve(wTasks);
+    resolve(tmpTasks);
   });
 }
