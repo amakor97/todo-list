@@ -3,16 +3,15 @@ import sMenu from "./sMenu.module.css";
 import SmallTask from "../smallTask/SmallTask.js";
 import { NavLink, Outlet } from "react-router-dom";
 
-export default function SideMenu() {
-  const tasksNum = 5;
-
+export default function SideMenu({openedNum, tasksArr}) {
   return (
     <aside className={sMenu.cont}>
       <div>
-        <p>Number of tasks: {tasksNum}</p>
+        <p>Number of tasks: {openedNum}</p>
       </div>
-      <SmallTask/>
-      <SmallTask/>
+      {
+        tasksArr.slice(0, 2).map(task => <SmallTask key={task.id} task={task}/>)
+      }
       <div>
         <NavLink
           to="/">
@@ -23,6 +22,18 @@ export default function SideMenu() {
         <NavLink
           to="/opened">
             Open
+        </NavLink>
+      </div>
+      <div>
+        <NavLink
+          to="/opened/running">
+            Open-running
+        </NavLink>
+      </div>
+      <div>
+        <NavLink
+          to="/opened/expired">
+            Open-expired
         </NavLink>
       </div>
       <div>

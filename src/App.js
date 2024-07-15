@@ -1,121 +1,31 @@
+import { Outlet, useLoaderData } from "react-router-dom";
+import { getTasksFromLs } from "./requests/tasksRequests.js";
+
+import { PageSettings } from "./pageSettings.js";
+
 import Header from "./components/header/Header.js";
 import Footer from "./components/footer/Footer.js";
-
-import app from "./app.module.css";
-
-import { getImportantOpenedTasksFromLs, getTasks, getTasksFromLs } from "./requests/tasksRequests.js";
-
-import { NavLink, Outlet, useLoaderData } from "react-router-dom";
-import { useState, useReducer, useEffect } from "react";
-import useTasks from "./hooks/useTasks.js";
-import { PageSettings } from "./pageSettings.js";
-import SmallTask from "./components/smallTask/SmallTask.js";
-
-
-
-
-export async function tasksLoaderImp() {
-  let tasks2 = await getTasks();
-  let openTasksLen = tasks2.filter(task => task.status === "not finished").length;
-  tasks2 = tasks2.filter(task => task.comments.includes("important") && task.status === "not finished").splice(0, 2);
-  return {tasks2, openTasksLen};
-}
-
-export async function tasksLoaderFromLs() {
-  let tasks = await getTasksFromLs();
-  let openTasksLen = tasks.filter(task => task.status === "not finished").length;
-  return {tasks, openTasksLen};
-}
+import SideMenu from "./components/sideMenu/SideMenu.js";
 
 
 export async function tasksLoaderComplexFromLs() {
-  console.log("complex load");
-
   let srcTasks = await getTasksFromLs();
-  let openedImpTasks = await getImportantOpenedTasksFromLs();
   let openTasksLen = srcTasks.filter(task => task.status === "not finished").length;
   return {srcTasks, openTasksLen};
 }
 
 
 function App() {
-  const {error, filterText} = useTasks();
-
-  //window.localStorage.setItem("tasks", JSON.stringify(tasksData));
-
   const {srcTasks, openTasksLen} = useLoaderData();
-
-
- // инициализируется только один раз, при загрузке страницы
- // при изменениях srcTasks не меняет 2
-
-
-
-
-
-
-  function handleUnload() {
-    console.log(srcTasks);
-    //window.localStorage.setItem("tasks", JSON.stringify(srcTasks));
-  }
-
-  useEffect(() => {
-    window.addEventListener("beforeunload", handleUnload);
-  }, []);
-
-
+  const tasksArr = srcTasks.filter(
+    task => task.status === "not finished").slice(0, 2);
 
   return (
     <div>
       <Header/>
-      <aside className={app.cont}>
-        <div>
-          <p>Number of tasks: {openTasksLen}</p>
-        </div>
-        {
-          //srcTasks.map(task => <SmallTask key={task.id} task={task}/>)
-        }
-        <div>
-          <NavLink
-            to="/">
-              All
-          </NavLink>
-        </div>
-        <div>
-          <NavLink
-            to="/opened">
-              Open
-          </NavLink>
-        </div>
-        <div>
-          <NavLink
-            to="/opened/running">
-              Open-running
-          </NavLink>
-        </div>
-        <div>
-          <NavLink
-            to="/opened/expired">
-              Open-expired
-          </NavLink>
-        </div>
-        <div>
-          <NavLink
-            to="/closed">
-              Closed
-          </NavLink>
-        </div>
-        <div>
-          <NavLink
-            to="/add">
-              Add
-          </NavLink>
-        </div>
-      </aside>
-      <PageSettings.Provider value={{srcTasks, filterText}}>
-        {
-          error ? null : <Outlet/>
-        }
+      <SideMenu tasksArr={tasksArr} openedNum={openTasksLen}/>
+      <PageSettings.Provider value={{srcTasks}}>
+        <Outlet/>
       </PageSettings.Provider>
       <Footer/>
     </div>
