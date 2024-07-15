@@ -56,8 +56,8 @@ const tasks = [
 ]
 
 
-function getTasks(arr) {
-  arr = JSON.parse(window.localStorage.getItem("tasks"));
+function getTasks() {
+  let arr = JSON.parse(window.localStorage.getItem("tasks"));
   if (!arr) {
     arr = tasks;
   }
@@ -66,10 +66,7 @@ function getTasks(arr) {
 
 
 export function getTasksFromLs() {
-  let tmpTasks = JSON.parse(window.localStorage.getItem("tasks"));
-  if (!tmpTasks) {
-    tmpTasks = tasks;
-  }
+  let tmpTasks = getTasks();
 
   return new Promise(function(resolve, reject) {
     setTimeout(() => resolve(tmpTasks), 1000);
@@ -79,11 +76,7 @@ export function getTasksFromLs() {
 
 export function getTasksByCategory(category) {
   let tasksByCategory = [];
-
-  let tmpTasks = JSON.parse(window.localStorage.getItem("tasks"));
-  if (!tmpTasks) {
-    tmpTasks = tasks;
-  }
+  let tmpTasks = getTasks();
 
   switch(category) {
     case "/opened": {
@@ -127,10 +120,7 @@ export function getTasksByTimeStatus(timeStatus) {
 
 
 export function getTasksByTitle(filterText) {
-  let tmpTasks = JSON.parse(window.localStorage.getItem("tasks"));
-  if (!tmpTasks) {
-    tmpTasks = tasks;
-  }
+  let tmpTasks = getTasks();
 
   if (!filterText) return new Promise(function (resolve, reject) {
     resolve(tmpTasks);
@@ -156,10 +146,7 @@ export function getTaskById(id) {
 
 
 export function getTasksId() {
-  let tmpTasks = JSON.parse(window.localStorage.getItem("tasks"));
-  if (!tmpTasks) {
-    tmpTasks = tasks;
-  }
+  let tmpTasks = getTasks();
 
   const ids = tmpTasks.map(task => task.id);
   return new Promise(function (resolve, reject) {
@@ -171,10 +158,7 @@ export function getTasksId() {
 export async function publishTask(task) {
   delete task.intent;
 
-  let tmpTasks = JSON.parse(window.localStorage.getItem("tasks"));
-  if (!tmpTasks) {
-    tmpTasks = tasks;
-  }
+  let tmpTasks = getTasks();
 
   tmpTasks.push(await task);
   window.localStorage.setItem("tasks", JSON.stringify(tmpTasks));
@@ -188,11 +172,7 @@ export async function publishTask(task) {
 export async function updateTask(task, id) {
   delete tasks.intent;
 
-  let tmpTasks = JSON.parse(window.localStorage.getItem("tasks"));
-  if (!tmpTasks) {
-    tmpTasks = tasks;
-  }
-
+  let tmpTasks = getTasks();
   let ind = tmpTasks.findIndex(task => +task.id === +id);
 
   if (task.intent === "submit") {
@@ -210,11 +190,7 @@ export async function updateTask(task, id) {
 
 
 export async function completeTask(id) {
-  let tmpTasks = JSON.parse(window.localStorage.getItem("tasks"));
-  if (!tmpTasks) {
-    tmpTasks = tasks;
-  }
-
+  let tmpTasks = getTasks();
   let ind = tmpTasks.findIndex(task => +task.id === +id);
 
   tmpTasks[ind].status = "finished";

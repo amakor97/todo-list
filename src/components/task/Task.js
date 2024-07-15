@@ -18,9 +18,7 @@ export default forwardRef(
 
 
     function handleCompleteTask(e) {
-      console.log("sss");
       setIsCardOpened(false);
-      console.log(e.currentTarget);
       submit(e.currentTarget);
     }
 

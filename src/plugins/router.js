@@ -1,15 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
-import App from "../App.js";
-import AddTaskForm from "../components/addTaskForm/AddTaskForm.js";
-import TasksList from "../components/tasksList/TasksList.js";
-import { tasksByCategoryLoader, tasksByStatusLoader, tasksByTitleLoader } from "../pages/TasksPage.js";
-import { tasksLoaderComplexFromLs } from "../App.js";
-import TasksPage from "../pages/TasksPage.js";
+import App, { tasksLoaderComplexFromLs } from "../App.js";
+import TasksPage, { tasksByCategoryLoader, tasksByStatusLoader, tasksByTitleLoader } from "../pages/TasksPage.js";
 import AddTaskPage, { createAction, idsLoader } from "../pages/AddTaskPage.js";
-import UpdateTaskPage from "../pages/UpdateTaskPage.js";
-import { taskByIdLoader } from "../pages/UpdateTaskPage.js";
-import { updateTask } from "../requests/tasksRequests.js";
-import { updateAction } from "../pages/UpdateTaskPage.js";
+import UpdateTaskPage, { taskByIdLoader, updateAction} from "../pages/UpdateTaskPage.js";
 import { completeTaskByIdAction } from "../components/tasksList/TasksList.js";
 
 const routes = [
