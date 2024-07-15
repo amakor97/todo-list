@@ -46,7 +46,7 @@ export default forwardRef(
               </NavLink>
               <Form method="put">
                 <button className={task.completeBtn} 
-                  type="submit" value={taskData.id} onClick={handleCompleteTask}>
+                  type="submit" value={taskData.id} name="complete" onClick={handleCompleteTask}>
                     Complete
                 </button>
               </Form>
