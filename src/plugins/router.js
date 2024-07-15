@@ -35,6 +35,7 @@ const routes = [
         path: "/opened/:status",
         element: <TasksPage/>,
         loader: tasksByStatusLoader,
+        action: completeTaskByIdAction
       },
       {
         path: "/closed",

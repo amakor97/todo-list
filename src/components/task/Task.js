@@ -18,7 +18,9 @@ export default forwardRef(
 
 
     function handleCompleteTask(e) {
+      console.log("sss");
       setIsCardOpened(false);
+      console.log(e.currentTarget);
       submit(e.currentTarget);
     }
 
@@ -42,7 +44,7 @@ export default forwardRef(
               <NavLink className={task.completeBtn} to={"/" + taskData.id + "/update"}>
                 Update
               </NavLink>
-              <Form method="PUT">
+              <Form method="put">
                 <button className={task.completeBtn} 
                   type="submit" value={taskData.id} onClick={handleCompleteTask}>
                     Complete

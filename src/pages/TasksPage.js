@@ -97,105 +97,19 @@ function sortTasks(defTasksArr, tasksArr, sortType) {
 
 
 export default function TasksPage() {
-  
-  let t = [];
-  console.log(t);
-  console.log({t});
 
   const [sortType, setSortType] = useState(sortOptions[0].value);
-  const contextData = useContext(PageSettings);
-
-  let location = useLocation();
   const tmpTasks = useLoaderData();
-
-  const srcTasks = (location.pathname === "/") ? contextData.srcTasks : JSON.parse(JSON.stringify(tmpTasks));
-  //const srcTasks2 = contextData.srcTasks;
-
-  console.log(JSON.stringify(contextData.srcTasks) === JSON.stringify(tmpTasks));
-
-  console.log("context srctasks:");
-  console.log(contextData.srcTasks);
-
-  console.log("tmptasks:");
-  console.log(tmpTasks);
-
+  const srcTasks = JSON.parse(JSON.stringify(tmpTasks));
 
   let srcTasks2 = JSON.parse(JSON.stringify(srcTasks));
   srcTasks2 = sortTasks(tmpTasks, srcTasks2, sortType);
 
-  function handleTasks(tasks, action) {
-    switch(action.type) {
-      case "complete": {
-        return tasks.map(task => {
-          if (task.id === +action.taskId) {
-            return {
-              ...task,
-              status: "finished",
-            }
-          } else {
-            return task;
-          }
-        })
-      }
-      
-      /*
-      case "addParticipant": {
-        const tasksCopy = JSON.parse(JSON.stringify(tasks));
-
-        tasksCopy.map(task => {
-          if (task.id === +action.task.id) {
-            const newParticipants = task.participants;
-            newParticipants.push(action.task.name);
-
-            return {
-              ...task,
-              participants: newParticipants
-            }
-          } else {
-            return task;
-          }
-        })
-
-        if (sortType === "number") {
-          tasksCopy.sort((taskA, taskB) => sortByParticipantsNumber(taskA, taskB));
-        }
-
-        return tasksCopy;
-      }
-      */
-      
-      case "sort": {
-        const tasksCopy = JSON.parse(JSON.stringify(tasks));
-        setSortType(action.sortType);
-
-        switch(action.sortType) {
-          case "start":
-          case "finish": {
-            return tasksCopy.sort((taskA, taskB) => sortTasksByDate(action.sortType, taskA, taskB));
-          }
-          case "number": {
-            return tasksCopy.sort((taskA, taskB) => sortByParticipantsNumber(taskA, taskB));
-          }
-          default: return tasksCopy.sort((taskA, taskB) => sortById(taskA, taskB));
-        }
-      }
-
-      /*
-      case "addTask": {
-        const tasksCopy = JSON.parse(JSON.stringify(tasks));
-        tasksCopy.push(action.newTask);
-        return tasksCopy;
-      }
-      */
-      
-      default: return srcTasks;
-    }
-  }
 
   const filterText = "";
 
   return (
-    <PageSettings.Provider value={{srcTasks, srcTasks2, filterText, setSortType}}>
+    <PageSettings.Provider value={{srcTasks, srcTasks2, setSortType}}>
       <TasksList/>
     </PageSettings.Provider>
   )
