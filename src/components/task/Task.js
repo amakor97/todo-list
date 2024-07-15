@@ -6,16 +6,16 @@ import { Form, useSubmit, NavLink } from "react-router-dom";
 export default forwardRef(
   function Task({taskData, id}, ref) {
     const [isCardOpened, setIsCardOpened] = useState(false);
+    let submit = useSubmit();
 
     const commentsStr = taskData.comments.join(", ");
     const participantsStr = taskData.participants.join(", ");
-    
-    let submit = useSubmit();
+
 
     function handleClickEvent() {
       setIsCardOpened(!isCardOpened);
-      
     }
+
 
     function handleCompleteTask(e) {
       setIsCardOpened(false);
@@ -39,10 +39,14 @@ export default forwardRef(
             </div>
             <div className={task.footer}>
               <p>started: {taskData.startDate}</p>
-              <NavLink className={task.completeBtn} to={"/" + taskData.id + "/update"}>Update</NavLink>
+              <NavLink className={task.completeBtn} to={"/" + taskData.id + "/update"}>
+                Update
+              </NavLink>
               <Form method="PUT">
-                <button className={task.completeBtn} type="submit" name="complete" value={taskData.id} 
-                  onClick={handleCompleteTask}>Complete</button>
+                <button className={task.completeBtn} 
+                  type="submit" value={taskData.id} onClick={handleCompleteTask}>
+                    Complete
+                </button>
               </Form>
             </div>
           </>

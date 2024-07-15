@@ -10,6 +10,7 @@ import { useReducer, useState } from "react";
 import { getTasks, getTasksByCategory, getTasksByTimeStatus, getTasksByTitle } from "../requests/tasksRequests";
 
 export async function tasksLoader() {
+  console.log("all load");
   const tasks = await getTasks();
   return {tasks};
 }
@@ -53,25 +54,25 @@ function sortById(taskA, taskB) {
 }
 
 export async function tasksByCategoryLoader({request}) {
+  console.log("cat load");
   const url = new URL(request.url);
   let tasks = await getTasksByCategory(url.pathname);
-
-  
-
-  return {tasks};
+  return tasks;
 }
 
 export async function tasksByStatusLoader({params}) {
+  console.log("status load");
   const tasks = await getTasksByTimeStatus(params.status);
-  return {tasks};
+  return tasks;
 }
 
 
 export async function tasksByTitleLoader({request}) {
+  console.log("title load");
   const url = new URL(request.url);
   const taskFilter = url.searchParams.get("task_filter");
   const tasks = await getTasksByTitle(taskFilter);
-  return {tasks};
+  return tasks;
 }
 
 
@@ -97,6 +98,10 @@ function sortTasks(defTasksArr, tasksArr, sortType) {
 
 export default function TasksPage() {
   
+  let t = [];
+  console.log(t);
+  console.log({t});
+
   const [sortType, setSortType] = useState(sortOptions[0].value);
   const contextData = useContext(PageSettings);
 
@@ -106,8 +111,14 @@ export default function TasksPage() {
   const srcTasks = (location.pathname === "/") ? contextData.srcTasks : JSON.parse(JSON.stringify(tmpTasks));
   //const srcTasks2 = contextData.srcTasks;
 
-  //const [srcTasks2, dispatch] = useReducer(handleTasks, contextData.srcTasks);
-  //const [srcTasks2, dispatch] = useReducer(handleTasks, srcTasks);
+  console.log(JSON.stringify(contextData.srcTasks) === JSON.stringify(tmpTasks));
+
+  console.log("context srctasks:");
+  console.log(contextData.srcTasks);
+
+  console.log("tmptasks:");
+  console.log(tmpTasks);
+
 
   let srcTasks2 = JSON.parse(JSON.stringify(srcTasks));
   srcTasks2 = sortTasks(tmpTasks, srcTasks2, sortType);

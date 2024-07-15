@@ -29,6 +29,8 @@ export async function tasksLoaderFromLs() {
 
 
 export async function tasksLoaderComplexFromLs() {
+  console.log("complex load");
+
   let srcTasks = await getTasksFromLs();
   let openedImpTasks = await getImportantOpenedTasksFromLs();
   let openTasksLen = srcTasks.filter(task => task.status === "not finished").length;
@@ -123,21 +125,7 @@ function App() {
 export default App;
 
 
-/*
 
-[
-  {
-    id: 1, 
-    startDate: "2024.05.13", 
-    finishDate: "2024.08.05", 
-    comments: ["important"], 
-    description: "study js react course", 
-    participants: ["myself"],
-    status: "not finished"
-  }
-]
-
-*/
 
 
 

@@ -88,6 +88,8 @@ export function getImportantOpenedTasksFromLs() {
 export function getTasksByCategory(category) {
   let tasksByCategory = [];
 
+  console.log("cat req");
+
   let wTasks = JSON.parse(window.localStorage.getItem("tasks"));
   if (!wTasks) {
     wTasks = tasks;
@@ -105,6 +107,7 @@ export function getTasksByCategory(category) {
     }
   }
 
+  console.log(tasksByCategory);
 
   return new Promise(function(resolve, reject) {
     setTimeout(() => resolve(tasksByCategory), 1000);

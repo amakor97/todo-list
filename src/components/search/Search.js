@@ -2,7 +2,7 @@ import search from "./search.module.css";
 
 import { Form, useSubmit } from "react-router-dom";
 
-export default function Search({onInputSearch}) {
+export default function Search() {
   const submit = useSubmit();
 
   return (
