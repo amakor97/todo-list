@@ -20,10 +20,7 @@ const sortOptions = [
 
 
 export async function completeTaskByIdAction({request}) {
-  console.log("complete");
-  console.log(request);
   const data = Object.fromEntries(await request.formData());
-  console.log(data);
   await completeTask(data.complete);
   return redirect("/");
 }

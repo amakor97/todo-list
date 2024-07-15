@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import App, { tasksLoaderFromLs } from "../App.js";
 import AddTaskForm from "../components/addTaskForm/AddTaskForm.js";
 import TasksList from "../components/tasksList/TasksList.js";
-import { tasksLoader, tasksByCategoryLoader, tasksByStatusLoader, tasksByTitleLoader } from "../pages/TasksPage.js";
+import { tasksByCategoryLoader, tasksByStatusLoader, tasksByTitleLoader } from "../pages/TasksPage.js";
 import { tasksLoaderImp, tasksLoaderComplexFromLs } from "../App.js";
 import TasksPage from "../pages/TasksPage.js";
 import AddTaskPage, { createAction, idsLoader } from "../pages/AddTaskPage.js";
