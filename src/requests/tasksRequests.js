@@ -96,18 +96,19 @@ export function getTasksByCategory(category) {
 
 
 export function getTasksByTimeStatus(timeStatus) {
+  let tmpTasks = getTasks();
   let tasksByTimeStatus = [];
   let date = new Date();
   date = date.toISOString().slice(0, 10).replaceAll("-", ".");
 
   switch (timeStatus) {
     case "running": {
-      tasksByTimeStatus = tasks.filter(
+      tasksByTimeStatus = tmpTasks.filter(
         task => (task.status === "not finished" && task.finishDate >= date));
       break;
     }
     case "expired": {
-      tasksByTimeStatus = tasks.filter(
+      tasksByTimeStatus = tmpTasks.filter(
         task => (task.status === "not finished" && task.finishDate < date));
       break;
     }

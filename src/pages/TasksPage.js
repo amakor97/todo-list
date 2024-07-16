@@ -82,11 +82,11 @@ export default function TasksPage() {
   const tmpTasks = useLoaderData();
   const srcTasks = JSON.parse(JSON.stringify(tmpTasks));
 
-  let srcTasks2 = JSON.parse(JSON.stringify(srcTasks));
-  srcTasks2 = sortTasks(tmpTasks, srcTasks2, sortType);
+  let renderedTasks = JSON.parse(JSON.stringify(srcTasks));
+  renderedTasks = sortTasks(tmpTasks, renderedTasks, sortType);
 
   return (
-    <PageSettings.Provider value={{srcTasks, srcTasks2, setSortType}}>
+    <PageSettings.Provider value={{srcTasks, renderedTasks, setSortType}}>
       <TasksList/>
     </PageSettings.Provider>
   )

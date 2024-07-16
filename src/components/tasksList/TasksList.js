@@ -29,8 +29,9 @@ export async function completeTaskByIdAction({request}) {
 export default function TasksList() {
   const contextData = useContext(PageSettings);
   const location = useLocation();
-  const srcTasks2 = (contextData.srcTasks2.tasks) ? 
-    contextData.srcTasks2.tasks : contextData.srcTasks2;
+  console.log(contextData.renderedTasks);
+  const renderedTasks = contextData.renderedTasks;
+  
   const setSortType = contextData.setSortType;
   const taskRefs = useRef([]);
 
@@ -58,18 +59,18 @@ export default function TasksList() {
         {(location.pathname === "/") && <Search/>}
       </div>
       {
-        (srcTasks2.length !== 0) ? 
+        (renderedTasks.length !== 0) ? 
         <div className={tasksList.linksCont}>
           {
-            srcTasks2.map(task => 
+            renderedTasks.map(task => 
               <TaskLink taskId={task.id} onLinkClick={handleScroll} key={task.id}/>)
           }
         </div> :
         null
       }
       {
-        (srcTasks2.length !== 0) ? 
-        srcTasks2.map((task) => 
+        (renderedTasks.length !== 0) ? 
+        renderedTasks.map((task) => 
           <Task 
             ref={el => taskRefs.current.push(el)}
             taskData={task} 
