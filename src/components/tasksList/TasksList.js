@@ -29,7 +29,6 @@ export async function completeTaskByIdAction({request}) {
 export default function TasksList() {
   const contextData = useContext(PageSettings);
   const location = useLocation();
-  console.log(contextData.renderedTasks);
   const renderedTasks = contextData.renderedTasks;
   
   const setSortType = contextData.setSortType;

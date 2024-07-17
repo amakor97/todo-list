@@ -1,10 +1,14 @@
-import { useLoaderData, redirect } from "react-router-dom";
+import { useLoaderData, redirect, useLocation } from "react-router-dom";
 
 import AddTaskForm from "../components/addTaskForm/AddTaskForm";
 
 import { getTaskById, updateTask } from "../requests/tasksRequests";
 
 import { PageSettings } from "../pageSettings";
+
+
+import { useSelector } from "react-redux";
+import { taskById } from "./tasksSlice.js";
 
 
 export async function taskByIdLoader({params}) {
@@ -38,7 +42,19 @@ export async function updateAction({request, params}) {
 
 
 export default function AddTaskPage() {
-  const {task} = useLoaderData();
+
+  let loc = useLocation();
+  console.log(loc.pathname);
+
+  let id = loc.pathname.slice(1, loc.pathname.lastIndexOf("/"));
+  console.log(id);
+
+
+
+  //const {task} = useLoaderData();
+  const task = useSelector(state => taskById(state, +id));
+
+  console.log(task);
 
   return (
     <PageSettings.Provider value={{task}}>

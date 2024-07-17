@@ -5,7 +5,6 @@ import AddTaskForm from "../components/addTaskForm/AddTaskForm";
 
 import { getTasksId, publishTask } from "../requests/tasksRequests";
 
-
 function getMaxId(ids) {
   let maxId = 0;
 

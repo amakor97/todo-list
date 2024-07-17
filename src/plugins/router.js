@@ -9,37 +9,37 @@ const routes = [
   {
     path: "/",
     element: <App/>,
-    loader: tasksLoaderComplexFromLs,
+    //loader: tasksLoaderComplexFromLs,
     action: completeTaskByIdAction,
     children: [
       {
         index: true,
         element: <TasksPage/>,
-        loader: tasksByTitleLoader,
+        //loader: tasksByTitleLoader,
         action: completeTaskByIdAction
       },
       {
         path: "/opened",
         element: <TasksPage/>,
-        loader: tasksByCategoryLoader,
+        //loader: tasksByCategoryLoader,
         action: completeTaskByIdAction
       },
       {
         path: "/opened/:status",
         element: <TasksPage/>,
-        loader: tasksByStatusLoader,
+        //loader: tasksByStatusLoader,
         action: completeTaskByIdAction
       },
       {
         path: "/closed",
         element: <TasksPage/>,
-        loader: tasksByCategoryLoader,
+        //loader: tasksByCategoryLoader,
         action: completeTaskByIdAction
       },
       {
         path: "/add",
         element: <AddTaskPage/>,
-        loader: idsLoader,
+        //loader: idsLoader, //??????
         action: createAction
       },
       {
@@ -48,7 +48,7 @@ const routes = [
           {
             path: "/:taskId/update",
             element: <UpdateTaskPage/>,
-            loader: taskByIdLoader,
+            //loader: taskByIdLoader,
             action: updateAction
           }
         ]

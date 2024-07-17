@@ -2,13 +2,13 @@ import TasksList from "../components/tasksList/TasksList";
 
 import { useState } from "react";
 import { PageSettings } from "../pageSettings";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useLocation } from "react-router-dom";
 
 import { getTasksByCategory, getTasksByTimeStatus, 
   getTasksByTitle } from "../requests/tasksRequests";
 
 import { useSelector } from "react-redux";
-import { allTasks } from "./tasksSlice.js";
+import { tasksByTitle, tasksByCategory, tasksByTimeStatus } from "./tasksSlice.js";
 
 const sortOptions = [
   {id: 1, name: "Select sort", value: "none"},
@@ -80,12 +80,53 @@ function sortTasks(defTasksArr, tasksArr, sortType) {
 
 
 export default function TasksPage() {
+  let loc = useLocation();
+  console.log(loc.pathname);
+  const filterText = loc.search.slice(loc.search.indexOf("=")+1);
+  console.log(filterText);
+
+  let tmpTasks = [];
+
+  let allTmpTasks = useSelector(state => tasksByTitle(state, filterText));
+  let tmpCatTasks = useSelector(state => tasksByCategory(state, loc.pathname));
+  let tmpTimeStatusTasks = useSelector(state => tasksByTimeStatus(state, loc.pathname.slice(loc.pathname.lastIndexOf("/")+1)));
+
+  console.log(tmpCatTasks);
+
+
+  switch (loc.pathname) {
+    case "/": {
+      tmpTasks = allTmpTasks;
+      break;
+    }
+    case "/opened":
+    case "/closed": {
+      tmpTasks = tmpCatTasks;
+      break;
+    }
+    case "/opened/running":
+    case "/opened/expired": {
+      tmpTasks = tmpTimeStatusTasks;
+      break;
+    }
+  }
+
+
+  console.log(tmpTasks);
+  
   const [sortType, setSortType] = useState(sortOptions[0].value);
-  const tmpTasks = useLoaderData();
-  const srcTasks = JSON.parse(JSON.stringify(tmpTasks));
+  //const tmpTasks = useLoaderData();
+  const srcTasks = JSON.parse(JSON.stringify(tmpTasks)); //contextDara.srcTasks???
+
+
+
 
   let renderedTasks = JSON.parse(JSON.stringify(srcTasks));
   renderedTasks = sortTasks(tmpTasks, renderedTasks, sortType);
+
+
+
+
 
   return (
     <PageSettings.Provider value={{srcTasks, renderedTasks, setSortType}}>

@@ -8,6 +8,9 @@ import Footer from "./components/footer/Footer.js";
 import SideMenu from "./components/sideMenu/SideMenu.js";
 
 
+import { useSelector } from "react-redux";
+import { allTasks } from "./pages/tasksSlice.js";
+
 export async function tasksLoaderComplexFromLs() {
   let srcTasks = await getTasksFromLs();
   let openTasksLen = srcTasks.filter(task => task.status === "not finished").length;
@@ -16,7 +19,12 @@ export async function tasksLoaderComplexFromLs() {
 
 
 function App() {
-  const {srcTasks, openTasksLen} = useLoaderData();
+  //const {srcTasks, openTasksLen} = useLoaderData();
+  const srcTasks = useSelector(allTasks);
+  const openTasksLen = srcTasks.filter(task => task.status === "not finished").length;
+  console.log(srcTasks, openTasksLen);
+
+  
   const tasksArr = srcTasks.filter(
     task => task.status === "not finished").slice(0, 2);
 

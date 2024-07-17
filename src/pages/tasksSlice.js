@@ -89,17 +89,21 @@ const tasksSlice = createSlice({
       return tasksByTimeStatus;
     },
 
-    taskByTitle: (state, filterText) => {
+    tasksByTitle: (state, filterText) => {
       if (!filterText) {
         return state.tasks;
       }
 
-      return state.tasks.filter(
+      const tasksByTitle = state.tasks.filter(
         task => task.description.toLowerCase().includes(filterText.toLowerCase()));
+
+        //return [];
+
+      return tasksByTitle;
     }
   }
 })
 
 export const {createTask, updateTask, completeTask, deleteTask} = tasksSlice.actions;
-export const {allTasks, taskById, tasksId, tasksByCategory, tasksByTimeStatus, taskByTitle} = tasksSlice.selectors;
+export const {allTasks, taskById, tasksId, tasksByCategory, tasksByTimeStatus, tasksByTitle} = tasksSlice.selectors;
 export default tasksSlice.reducer;
