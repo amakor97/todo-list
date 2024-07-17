@@ -50,10 +50,56 @@ const tasksSlice = createSlice({
   },
   selectors: {
     allTasks: (state) => state.tasks,
-    findById: (state, id) => state.tasks.find(task => task.id === id)
+    taskById: (state, id) => state.tasks.find(task => task.id === id),
+    tasksId: (state) => state.tasks.map(task => task.id),
+
+    tasksByCategory: (state, category) => {
+      let tasksByCategory = [];
+      switch(category) {
+        case "/opened": {
+          tasksByCategory = state.tasks.filter(task => task.status === "not finished");
+          break;
+        }
+        case "/closed": {
+          tasksByCategory = state.tasks.filter(task => task.status === "finished");
+          break;
+        }
+      }
+      return tasksByCategory;
+    },
+    
+    tasksByTimeStatus: (state, timeStatus) => {
+      let tasksByTimeStatus = [];
+      let date = new Date();
+      date = date.toISOString().slice(0, 10).replaceAll("-", ".");
+
+      switch (timeStatus) {
+        case "running": {
+          tasksByTimeStatus = state.tasks.filter(
+            task => (task.status === "not finished" && task.finishDate >= date));
+          break;
+        }
+        case "expired": {
+          tasksByTimeStatus = state.tasks.filter(
+            task => (task.status === "not finished" && task.finishDate < date));
+          break;
+        }
+      }
+
+      return tasksByTimeStatus;
+    },
+
+    taskByTitle: (state, filterText) => {
+      if (!filterText) {
+        return state.tasks;
+      }
+
+      return state.tasks.filter(
+        task => task.description.toLowerCase().includes(filterText.toLowerCase()));
+    }
   }
 })
 
 export const {createTask, updateTask, completeTask, deleteTask} = tasksSlice.actions;
-export const {allTasks, findById} = tasksSlice.selectors;
+export const {allTasks, taskById, tasksId, tasksByCategory, tasksByTimeStatus, taskByTitle} = tasksSlice.selectors;
 export default tasksSlice.reducer;
