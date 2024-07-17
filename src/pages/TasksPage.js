@@ -7,6 +7,8 @@ import { useLoaderData } from "react-router-dom";
 import { getTasksByCategory, getTasksByTimeStatus, 
   getTasksByTitle } from "../requests/tasksRequests";
 
+import { useSelector } from "react-redux";
+import { allTasks } from "./tasksSlice.js";
 
 const sortOptions = [
   {id: 1, name: "Select sort", value: "none"},
