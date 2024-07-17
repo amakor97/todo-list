@@ -1,4 +1,4 @@
-const tasks = [
+export const tasks = [
   {
     id: 1, 
     startDate: "2024.05.13", 
