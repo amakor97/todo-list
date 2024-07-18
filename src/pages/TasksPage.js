@@ -1,8 +1,9 @@
 import TasksList from "../components/tasksList/TasksList";
 
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import { PageSettings } from "../pageSettings";
 import { useLoaderData, useLocation } from "react-router-dom";
+
 
 import { getTasksByCategory, getTasksByTimeStatus, 
   getTasksByTitle } from "../requests/tasksRequests";
@@ -80,6 +81,7 @@ function sortTasks(defTasksArr, tasksArr, sortType) {
 
 
 export default function TasksPage() {
+  const contextData = useContext(PageSettings);
   let loc = useLocation();
   console.log(loc.pathname);
   const filterText = loc.search.slice(loc.search.indexOf("=")+1);
@@ -111,14 +113,11 @@ export default function TasksPage() {
     }
   }
 
-
-  console.log(tmpTasks);
   
   const [sortType, setSortType] = useState(sortOptions[0].value);
   //const tmpTasks = useLoaderData();
-  const srcTasks = JSON.parse(JSON.stringify(tmpTasks)); //contextDara.srcTasks???
-
-
+  //const srcTasks = JSON.parse(JSON.stringify(tmpTasks)); //contextDara.srcTasks???
+  const srcTasks = contextData.srcTasks;
 
 
   let renderedTasks = JSON.parse(JSON.stringify(srcTasks));

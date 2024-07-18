@@ -10,13 +10,13 @@ const routes = [
     path: "/",
     element: <App/>,
     //loader: tasksLoaderComplexFromLs,
-    action: completeTaskByIdAction,
+    //action: completeTaskByIdAction,
     children: [
       {
         index: true,
         element: <TasksPage/>,
         //loader: tasksByTitleLoader,
-        action: completeTaskByIdAction
+        //action: completeTaskByIdAction
       },
       {
         path: "/opened",

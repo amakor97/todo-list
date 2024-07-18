@@ -3,8 +3,13 @@ import task from "./task.module.css";
 import { useState, forwardRef } from "react";
 import { Form, useSubmit, NavLink } from "react-router-dom";
 
+import { useDispatch } from "react-redux";
+import { completeTask } from "../../pages/tasksSlice.js";
+
 export default forwardRef(
   function Task({taskData, id}, ref) {
+    const dispatch = useDispatch();
+
     const [isCardOpened, setIsCardOpened] = useState(false);
     let submit = useSubmit();
 
@@ -42,12 +47,10 @@ export default forwardRef(
               <NavLink className={task.completeBtn} to={"/" + taskData.id + "/update"}>
                 Update
               </NavLink>
-              <Form method="put">
-                <button className={task.completeBtn} 
-                  type="submit" value={taskData.id} name="complete" onClick={handleCompleteTask}>
-                    Complete
-                </button>
-              </Form>
+              <button className={task.completeBtn} 
+                type="button" value={taskData.id} name="complete" onClick={() => dispatch(completeTask(+taskData.id))}>
+                  Complete
+              </button>
             </div>
           </>
         }

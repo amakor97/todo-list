@@ -33,9 +33,11 @@ const tasksSlice = createSlice({
       reducer: (state, action) => {
         let targetTaskIndex = state.tasks.findIndex(task => task.id === action.payload);
         state.tasks[targetTaskIndex].status = "finished";
+
+        localStorage.setItem("tasks", JSON.stringify(state.tasks));
       },
       prepare: (id) => {
-        return {payload: {id}};
+        return {payload: id};
       }
     },
 
@@ -44,7 +46,7 @@ const tasksSlice = createSlice({
         state.tasks = state.tasks.filter(task => task.id !== action.payload);
       },
       prepare: (id) => {
-        return {payload: {id}};
+        return {payload: id};
       }
     }
   },
