@@ -22,7 +22,6 @@ function App() {
   //const {srcTasks, openTasksLen} = useLoaderData();
   const srcTasks = useSelector(allTasks);
   const openTasksLen = srcTasks.filter(task => task.status === "not finished").length;
-  console.log(srcTasks, openTasksLen);
 
   
   const tasksArr = srcTasks.filter(

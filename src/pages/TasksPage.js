@@ -83,17 +83,13 @@ function sortTasks(defTasksArr, tasksArr, sortType) {
 export default function TasksPage() {
   const contextData = useContext(PageSettings);
   let loc = useLocation();
-  console.log(loc.pathname);
   const filterText = loc.search.slice(loc.search.indexOf("=")+1);
-  console.log(filterText);
 
   let tmpTasks = [];
 
   let allTmpTasks = useSelector(state => tasksByTitle(state, filterText));
   let tmpCatTasks = useSelector(state => tasksByCategory(state, loc.pathname));
   let tmpTimeStatusTasks = useSelector(state => tasksByTimeStatus(state, loc.pathname.slice(loc.pathname.lastIndexOf("/")+1)));
-
-  console.log(tmpCatTasks);
 
 
   switch (loc.pathname) {
@@ -123,10 +119,7 @@ export default function TasksPage() {
   let renderedTasks = JSON.parse(JSON.stringify(srcTasks));
   renderedTasks = sortTasks(tmpTasks, renderedTasks, sortType);
 
-
-
-
-
+  
   return (
     <PageSettings.Provider value={{srcTasks, renderedTasks, setSortType}}>
       <TasksList/>

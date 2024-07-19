@@ -22,25 +22,25 @@ const routes = [
         path: "/opened",
         element: <TasksPage/>,
         //loader: tasksByCategoryLoader,
-        action: completeTaskByIdAction
+        //action: completeTaskByIdAction
       },
       {
         path: "/opened/:status",
         element: <TasksPage/>,
         //loader: tasksByStatusLoader,
-        action: completeTaskByIdAction
+        //action: completeTaskByIdAction
       },
       {
         path: "/closed",
         element: <TasksPage/>,
         //loader: tasksByCategoryLoader,
-        action: completeTaskByIdAction
+        //action: completeTaskByIdAction
       },
       {
         path: "/add",
         element: <AddTaskPage/>,
         //loader: idsLoader, //??????
-        action: createAction
+        //action: createAction
       },
       {
         path: "/:taskId",
@@ -49,7 +49,7 @@ const routes = [
             path: "/:taskId/update",
             element: <UpdateTaskPage/>,
             //loader: taskByIdLoader,
-            action: updateAction
+            //action: updateAction
           }
         ]
       }

@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+import { redirect } from "react-router-dom";
+
 import { tasks } from "../requests/tasksRequests";
 
 const initialState = {
@@ -13,9 +15,12 @@ const tasksSlice = createSlice({
     createTask: {
       reducer: (state, action) => {
         state.tasks.push(action.payload);
+
+        localStorage.setItem("tasks", JSON.stringify(state.tasks));
+        window.location = "/";
       },
       prepare: (taskData) => {
-        return {payload: {taskData}};
+        return {payload: taskData};
       }
     },
 
@@ -23,6 +28,9 @@ const tasksSlice = createSlice({
       reducer: (state, action) => {
         let targetTaskIndex = state.tasks.findIndex(task => task.id === action.payload.taskData.id);
         state.tasks[targetTaskIndex] = action.payload.taskData;
+
+        localStorage.setItem("tasks", JSON.stringify(state.tasks));
+        window.location = "/";
       },
       prepare: (taskData) => {
         return {payload: {taskData}};
@@ -35,6 +43,7 @@ const tasksSlice = createSlice({
         state.tasks[targetTaskIndex].status = "finished";
 
         localStorage.setItem("tasks", JSON.stringify(state.tasks));
+        window.location = "/";
       },
       prepare: (id) => {
         return {payload: id};
@@ -44,6 +53,9 @@ const tasksSlice = createSlice({
     deleteTask: {
       reducer: (state, action) => {
         state.tasks = state.tasks.filter(task => task.id !== action.payload);
+
+        localStorage.setItem("tasks", JSON.stringify(state.tasks));
+        window.location = "/";
       },
       prepare: (id) => {
         return {payload: id};
@@ -86,6 +98,9 @@ const tasksSlice = createSlice({
             task => (task.status === "not finished" && task.finishDate < date));
           break;
         }
+        default: {
+          tasksByTimeStatus = state.tasks;
+        }
       }
 
       return tasksByTimeStatus;
@@ -98,8 +113,6 @@ const tasksSlice = createSlice({
 
       const tasksByTitle = state.tasks.filter(
         task => task.description.toLowerCase().includes(filterText.toLowerCase()));
-
-        //return [];
 
       return tasksByTitle;
     }

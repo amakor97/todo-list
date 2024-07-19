@@ -42,19 +42,11 @@ export async function updateAction({request, params}) {
 
 
 export default function AddTaskPage() {
-
   let loc = useLocation();
-  console.log(loc.pathname);
-
   let id = loc.pathname.slice(1, loc.pathname.lastIndexOf("/"));
-  console.log(id);
-
-
 
   //const {task} = useLoaderData();
   const task = useSelector(state => taskById(state, +id));
-
-  console.log(task);
 
   return (
     <PageSettings.Provider value={{task}}>
